@@ -29,6 +29,10 @@ starting_actions = [
             {
                 'name': '3. Cancel an Order',
                 'value': 3
+            },
+            {
+                'name': '4. View Menu',
+                'value': 4
             }
 
         ]
@@ -41,8 +45,12 @@ def main():
     User selects their starting actions: Order a Pizza, Update an Existing Order, Cancel an Order
     """
     print("Welcome to Rajvi and Yichen's Pizza Parlour!")
-    answer = prompt(starting_actions)
+    answer = prompt(starting_actions, style=style)
     pprint(answer)
+
+
+def create_order():
+    name = input("What's your name?")
 
 
 if __name__ == "__main__":
