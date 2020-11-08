@@ -45,12 +45,13 @@ def main():
     User selects their starting actions: Order a Pizza, Update an Existing Order, Cancel an Order
     """
     print("Welcome to Rajvi and Yichen's Pizza Parlour!")
-    answer = prompt(starting_actions, style=style)
-    pprint(answer)
+    action = prompt(starting_actions, style=style)
+    pprint(action)
 
 
 def create_order():
     name = input("What's your name?")
+    print(name)
 
 
 if __name__ == "__main__":
