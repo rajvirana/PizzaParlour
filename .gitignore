@@ -6,8 +6,8 @@
 instance/*
 !instance/.gitignore
 .webassets-cache
-
-settings.json
+.vscode/
+*/settings.json
 
 ### Flask.Python Stack ###
 # Byte-compiled / optimized / DLL files
@@ -210,3 +210,11 @@ dmypy.json
 # profiling data
 
 # End of https://www.toptal.com/developers/gitignore/api/flask,python
+.vscode/settings.json
+.vscode/settings.json
+.vscode/settings.json
+.vscode/settings.json
+.vscode/settings.json
+.vscode/settings.json
+.vscode/settings.json
+.vscode/settings.json
