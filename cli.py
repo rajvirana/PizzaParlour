@@ -85,7 +85,7 @@ def display_menu() -> None:
     """
     with open(CSV, newline="") as f:
         reader = csv.reader(f)
-        print("=======Menu======")
+        print("="*15 + " MENU " + "="*15)
         for row in reader:
             if row[0] != '':
                 print("{0:30} {1:10}".format(row[0], row[1]))
