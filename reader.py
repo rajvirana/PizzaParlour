@@ -1,9 +1,13 @@
 import csv
 
-with open('menu.csv', newline="") as f:
+with open('orders.csv', newline="") as f:
     reader = csv.reader(f)
     for row in reader:
         if row[1] == '':
             print("YEET")
         else:
-            print(row[1])
+            if row[0] == '19347293874':
+                print("Order found")
+                print(row[2])
+            
+            # print(row)
