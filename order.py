@@ -1,20 +1,40 @@
 from typing import List
+import csv
 import time
  
+CSV = "menu.csv"
+
 class Order:
     '''
     '''
 
-    def __init__(self, type, extra_toppings, drink, delivery):
+    def __init__(self, type, size, extra_toppings, drink, delivery) :
         self._order_id = self.timestamp()
-        self._price = 10000
+
         self._type = type
+        self._size = size
+
         self._extra_toppings = extra_toppings
+
+
         self._drink = drink
         self._delivery = delivery
+        self._price = self.calculate_price()
 
+    def calculate_price(self) -> float:
 
+        total = 0.0
+
+        with open(CSV, newline="") as f:
+            reader = csv.reader(f)
+
+            for row in reader:
+                if row[0].lower() == self._size or row[0].lower() == self._type or row[0].lower() == self._drink or row[0].lower() in self._extra_toppings:
+                    
+                    total += float(row[1])
         
+        return total
+
     def timestamp(self) -> int:
         '''
         NOBODY'S GONNA KNOW ;)
@@ -49,6 +69,6 @@ class Order:
 
 
 if __name__ == "__main__":
-    order = Order('cheese', ['feta cheese'], 'coke', 'ubereats')
+    order = Order('cheese', 'small', ['feta cheese'], 'coke', 'ubereats')
 
-    print(order.get_order_id())
+    print(order.get_price()) # 16.55
