@@ -6,23 +6,54 @@ CSV = "menu.csv"
 
 class Order:
     '''
+    An order for the Pizza Parlour.
+
+    Precondition: All instance variables that are of the str type are all lowercase.
+
+    === Private Attributes ===
+    order_id:
+        The order's unique ID that the customer uses to change order or cancel order
+    type:
+        The type of pizza
+    size:
+        The size of the pizza
+    extra_toppings:
+        A list of extra toppings (prices calculated separately)
+    drink:
+        The drink accompanying the pizza
+    delivery:
+        The delivery method (ubereats / foodora / in-house)
+    address:
+        The address to deliver the pizza to
+
     '''
+    _order_id: int
+    _type: str
+    _size: str
+    _extra_toppings: List[str]
+    _drink: str
+    _delivery: str
+    _addresss: str
 
-    def __init__(self, type, size, extra_toppings, drink, delivery) :
-        self._order_id = self.timestamp()
 
+    def __init__(self, type, size, extra_toppings, drink, delivery, address) :
+        '''
+        Creates a new order.
+        '''
+        self._order_id = self._timestamp()
         self._type = type
         self._size = size
-
         self._extra_toppings = extra_toppings
-
-
+        self._address = address
         self._drink = drink
         self._delivery = delivery
-        self._price = self.calculate_price()
+        self._price = self._calculate_price()
 
-    def calculate_price(self) -> float:
+    def _calculate_price(self) -> float:
+        '''
+        
 
+        '''
         total = 0.0
 
         with open(CSV, newline="") as f:
@@ -35,7 +66,7 @@ class Order:
         
         return total
 
-    def timestamp(self) -> int:
+    def _timestamp(self) -> int:
         '''
         NOBODY'S GONNA KNOW ;)
         they'er gonna knoW
@@ -69,6 +100,6 @@ class Order:
 
 
 if __name__ == "__main__":
-    order = Order('cheese', 'small', ['feta cheese'], 'coke', 'ubereats')
+    order = Order('cheese', 'small', ['feta cheese'], 'coke', 'ubereats', "123 fml street")
 
     print(order.get_price()) # 16.55
