@@ -65,11 +65,11 @@ def main():
     action = prompt(starting_actions, style=style)
     pprint(action)
 
-    if action == CREATE_PIZZA_ACTION:
+    if action['action'] == CREATE_PIZZA_ACTION:
         pass
-    elif action == UPDATE_PIZZA_ACTION:
+    elif action['action'] == UPDATE_PIZZA_ACTION:
         pass
-    elif action == CANCEL_ORDER_ACTION:
+    elif action['action'] == CANCEL_ORDER_ACTION:
         pass
     else:
         display_menu()
@@ -88,11 +88,11 @@ def display_menu() -> None:
         print("=======Menu======")
         for row in reader:
             if row[0] != '':
-                print("{},     {}".format(row[0], row[1]))
+                print("{0:30} {1:10}".format(row[0], row[1]))
             else:
                 print(" ")
 
-    answer = prompt(return_action)
+    answer = prompt(return_action, style=style)
     pprint(answer)
 
     if (answer['return']):
