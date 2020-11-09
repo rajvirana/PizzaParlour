@@ -9,7 +9,7 @@ class Order:
         self._order_id = self.timestamp()
         self._price = 10000
         self._type = type
-        self._extra_topping = extra_toppings
+        self._extra_toppings = extra_toppings
         self._drink = drink
         self._delivery = delivery
 
@@ -30,25 +30,25 @@ class Order:
     def get_price(self) -> int:
         '''
         '''
-        return self.price
+        return self._price
     
     def get_order_id(self) -> int:
         '''
         '''
-        return self.order_id
+        return self._order_id
     
     def get_toppings(self) -> List:
         '''
         '''
-        return self.toppings
+        return self._extra_toppings
     
     def set_price(self, new_price) -> None:
         '''
         '''
-        self.price = new_price
+        self._price = new_price
 
 
 if __name__ == "__main__":
-    order = Order()
+    order = Order('cheese', ['feta cheese'], 'coke', 'ubereats')
 
     print(order.get_order_id())
