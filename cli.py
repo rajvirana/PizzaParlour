@@ -1,6 +1,14 @@
 from __future__ import print_function, unicode_literals
 from PyInquirer import Separator, Token, print_json, prompt, style_from_dict
 from pprint import pprint
+import csv
+
+CREATE_PIZZA_ACTION = 1
+UPDATE_PIZZA_ACTION = 2
+CANCEL_ORDER_ACTION = 3
+VIEW_MENU_ACTION = 4
+
+CSV = "menu.csv"
 
 style = style_from_dict({
     Token.Separator: '#cc5454',
@@ -20,19 +28,19 @@ starting_actions = [
         'choices': [
             {
                 'name': '1. Order a Pizza',
-                'value': 1
+                'value': CREATE_PIZZA_ACTION
             },
             {
                 'name': '2. Update an Existing Order',
-                'value': 2
+                'value': UPDATE_PIZZA_ACTION
             },
             {
                 'name': '3. Cancel an Order',
-                'value': 3
+                'value': CANCEL_ORDER_ACTION
             },
             {
                 'name': '4. View Menu',
-                'value': 4
+                'value': VIEW_MENU_ACTION
             }
 
         ]
@@ -48,10 +56,32 @@ def main():
     action = prompt(starting_actions, style=style)
     pprint(action)
 
+    if action == CREATE_PIZZA_ACTION:
+        pass
+    elif action == UPDATE_PIZZA_ACTION:
+        pass
+    elif action == CANCEL_ORDER_ACTION:
+        pass
+    else:
+        display_menu()
 
-def create_order():
-    name = input("What's your name?")
-    print(name)
+
+# def create_order():
+#     name = input("What's your name?")
+#     print(name)
+
+def display_menu() -> None:
+    """
+    Diplay the menu from menu.csv
+    """
+    with open(CSV, newline="") as f:
+        reader = csv.reader(f)
+        print("=======Menu======")
+        for row in reader:
+            if row[0] != '':
+                print("{},     {}".format(row[0], row[1]))
+            else:
+                print(" ")
 
 
 if __name__ == "__main__":
