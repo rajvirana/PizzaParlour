@@ -75,10 +75,6 @@ def main():
         display_menu()
 
 
-# def create_order():
-#     name = input("What's your name?")
-#     print(name)
-
 def display_menu() -> None:
     """
     Diplay the menu from menu.csv

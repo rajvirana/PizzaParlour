@@ -1,8 +1,9 @@
 from typing import List
 import csv
 import time
- 
+
 CSV = "menu.csv"
+
 
 class Order:
     '''
@@ -35,8 +36,7 @@ class Order:
     _delivery: str
     _addresss: str
 
-
-    def __init__(self, type, size, extra_toppings, drink, delivery, address) :
+    def __init__(self, type, size, extra_toppings, drink, delivery, address):
         '''
         Creates a new order.
         '''
@@ -60,9 +60,9 @@ class Order:
 
             for row in reader:
                 if row[0].lower() == self._size or row[0].lower() == self._type or row[0].lower() == self._drink or row[0].lower() in self._extra_toppings:
-                    
+
                     total += float(row[1])
-        
+
         return total
 
     def _timestamp(self) -> int:
@@ -81,6 +81,12 @@ class Order:
         '''
         return self._order_id
 
+    def set_order_id(self, id: str) -> int:
+        '''
+        Sets this order's id to id.
+        '''
+        self._order_id = id
+
     def get_type(self) -> str:
         '''
         Returns the type of the pizza in the order.
@@ -92,6 +98,12 @@ class Order:
         Returns the size of the pizza in the order.
         '''
         return self._size
+
+    def get_toppings(self) -> List[str]:
+        '''
+        Returns the list of toppings in the order.
+        '''
+        return self._extra_toppings
 
     def get_address(self) -> str:
         '''
@@ -116,9 +128,10 @@ class Order:
         Returns the price of the order.
         '''
         return self._price
-    
+
 
 if __name__ == "__main__":
-    order = Order('cheese', 'small', ['feta cheese'], 'coke', 'ubereats', "123 fml street")
+    order = Order('cheese', 'small', [
+                  'feta cheese'], 'coke', 'ubereats', "123 fml street")
 
-    print(order.get_price()) # 16.55
+    print(order.get_price())  # 16.55
