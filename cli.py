@@ -47,6 +47,15 @@ starting_actions = [
     }
 ]
 
+return_action = [
+    {
+        'type': 'confirm',
+        'message': 'Do you want to return to home selection?',
+        'name': 'return',
+        'default': True,
+    },
+]
+
 
 def main():
     """
@@ -82,6 +91,12 @@ def display_menu() -> None:
                 print("{},     {}".format(row[0], row[1]))
             else:
                 print(" ")
+
+    answer = prompt(return_action)
+    pprint(answer)
+
+    if (answer['return']):
+        main()
 
 
 if __name__ == "__main__":
