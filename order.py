@@ -5,13 +5,21 @@ class Order:
     '''
     '''
 
-    def __init__(self):
-        self.order_id = self.timestamp()
-        self.price = 10000
-        self.toppings = ['salt', 'tears', 'cheese']
+    def __init__(self, type, extra_toppings, drink, delivery):
+        self._order_id = self.timestamp()
+        self._price = 10000
+        self._type = type
+        self._extra_topping = extra_toppings
+        self._drink = drink
+        self._delivery = delivery
+
+
         
     def timestamp(self) -> int:
         '''
+        NOBODY'S GONNA KNOW ;)
+        they'er gonna knoW
+        hOw wOUlD thEY knoW????
         '''
         now = time.time()
         localtime = time.localtime(now)
