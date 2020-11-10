@@ -2,10 +2,16 @@ import csv
 from tempfile import NamedTemporaryFile
 import shutil
 
+# the csv file that orders will be read from and written to
 CSV = "orders.csv"
 
 
 def write_to_csv(new_order):
+    '''
+    Append a new order, new_order into orders.csv
+
+    Precondition: new_order.get_delivery() == "foodora"
+    '''
     with open('orders.csv', 'w', newline='') as csvfile:
         fieldnames = ['order_id', 'type', 'size', 'extra_toppings',
                       'drink', 'delivery', 'address', 'price']
@@ -20,6 +26,11 @@ def write_to_csv(new_order):
 
 
 def update_order_csv(order):
+    '''
+    Updates a prexisting order, with the data from order.
+
+    Precondition: There must be a prexisting order in orders.csv matching order.get_order_id()
+    '''
     tempfile = NamedTemporaryFile('w', newline='', delete=False)
 
     fieldnames = ['order_id', 'type', 'size', 'extra_toppings',

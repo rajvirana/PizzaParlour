@@ -3,10 +3,16 @@ import order
 import json
 from typing import Dict
 
+# the json files orders will be read from and written to
 JSON = "orders.json"
 
 
 def write_to_json(new_order: order.Order):
+    '''
+    Writes the order, new_order, into orders.json
+
+    Precondition: new_order.get_delivery() == "ubereats" or new_order.get_delivery() == "in-house"
+    '''
 
     with open('orders.json') as indata:
         order_data = json.load(indata)
