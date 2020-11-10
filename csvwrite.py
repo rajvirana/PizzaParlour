@@ -12,12 +12,11 @@ def write_to_csv(new_order):
 
     Precondition: new_order.get_delivery() == "foodora"
     '''
-    with open('orders.csv', 'w', newline='') as csvfile:
+    with open(CSV, 'a', newline='') as csvfile:
         fieldnames = ['order_id', 'type', 'size', 'extra_toppings',
                       'drink', 'delivery', 'address', 'price']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
-        writer.writeheader()
         writer.writerow({'order_id': new_order.get_order_id(), 'type': new_order.get_type(), 'size': new_order.get_size(),
                          'extra_toppings': new_order.get_toppings(), 'drink': new_order.get_drink(), 'delivery': new_order.get_delivery(),
                          'address': new_order.get_address(), 'price': new_order.get_price()})
@@ -36,7 +35,7 @@ def update_order_csv(order):
     fieldnames = ['order_id', 'type', 'size', 'extra_toppings',
                   'drink', 'delivery', 'address', 'price']
 
-    with open('orders.csv', 'r', newline='') as csvfile, tempfile:
+    with open(CSV, 'r', newline='') as csvfile, tempfile:
         reader = csv.DictReader(csvfile, delimiter=',', fieldnames=fieldnames)
         writer = csv.DictWriter(tempfile, delimiter=',', fieldnames=fieldnames)
 
@@ -65,3 +64,6 @@ def update_order_csv(order):
             writer.writerow(row)
 
     shutil.move(tempfile.name, 'orders.csv')
+
+
+# def remove_from_csv(order_id: str):
