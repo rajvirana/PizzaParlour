@@ -1,7 +1,7 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from order import Order
 from jsonwrite import write_to_json, remove_from_json
-from csvwrite import write_to_csv, update_order_csv, remove_from_csv
+from csvwrite import get_reader, write_to_csv, update_order_csv, remove_from_csv
 import json
 import csv
 
@@ -67,17 +67,19 @@ def cancel_order() -> str:
     return "ok"
 
 
+@app.route("/menu", methods=['GET'])
+def get_menu():
+    return jsonify(get_reader())
+
+
 # @app.route('/update')
 # def update_order(new_order: Order) -> None:
-
 # def calculate_total(prices) -> float:
 #     """
 #     Calculate and returns the user's total cost
-
 #     prices: the list of costs of all items in the user's order
 #     """
 #     return sum(prices)
-
 # @app.route('/create')
 # def store_order():
 #     # note: "orders" is an Order type object

@@ -1,9 +1,25 @@
-import csv
 from tempfile import NamedTemporaryFile
+from typing import List
+import csv
 import shutil
 
 # the csv file that orders will be read from and written to
 CSV = "orders.csv"
+MENU = "menu.csv"
+
+
+def get_reader() -> List[str]:
+    rows = []
+
+    with open(MENU, newline="") as f:
+        reader = csv.reader(f)
+
+        for line in reader:
+            rows.append(line)
+
+        f.close()
+
+    return rows
 
 
 def write_to_csv(new_order):
