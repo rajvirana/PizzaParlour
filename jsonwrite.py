@@ -6,14 +6,16 @@ from typing import Dict
 JSON = "orders.json"
 
 
-def write_to_json(new_order: Dict[str, float]):
+def write_to_json(new_order: order.Order):
 
     with open('orders.json') as indata:
         order_data = json.load(indata)
 
         indata.close()
 
-    order_data[new_order["_order_id"]] = new_order
+    order_dict = json.dumps(new_order.__dict__)
+
+    order_data[new_order.get_order_id()] = order_dict
 
     with open('orders.json', 'w') as outdata:
         json.dump(order_data, outdata)

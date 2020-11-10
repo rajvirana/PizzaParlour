@@ -21,7 +21,16 @@ def create_order() -> bool:
     Uploads the new order into the respective data files. If delivery method is foodora, will upload it to orders.csv,
     if delivery method is ubereats or in-house, uploads the order to orders.csv
     '''
-    write_to_json(request.json)
+    new_order = Order(request.json['_type'], request.json['_size'], request.json['_extra_toppings'],
+                      request.json['_drink'], request.json['_delivery'], request.json['_address'])
+
+    if request.json["_delivery"] == "foodora":
+        # serialize order to orders.csv
+        write_to_csv(new_order)
+
+    else:
+        write_to_json(new_order)
+
     return request.json
 
 
