@@ -32,12 +32,25 @@ def update_order_csv(order):
         for row in reader:
 
             if row['order_id'] == order.get_order_id():
-                print('updating row', row['order id'])
-                row['order_id'], row['price'], row['extra_toppings'] = order.get_order_id(
-                ), order.get_price(), order.get_toppings()
 
-            row = {'order id': row['order id'],
-                   'price': row['price'], 'toppings': row['toppings']}
+                row['order_id'] = order.get_order_id()
+                row['type'] = order.get_type()
+                row['size'] = order.get_size()
+                row['extra_toppings'] = order.get_toppings()
+                row['drink'] = order.get_drink()
+                row['delivery'] = order.get_delivery()
+                row['address'] = order.get_address()
+                row['price'] = order.get_price()
+
+            row = {'order_id': row['order_id'],
+                   'type': row['type'],
+                   'size': row['size'],
+                   'extra_toppings': row['extra_toppings'],
+                   'drink': row['drink'],
+                   'delivery': row['delivery'],
+                   'address': row['address'],
+                   'price': row['price']}
+
             writer.writerow(row)
 
     shutil.move(tempfile.name, 'orders.csv')

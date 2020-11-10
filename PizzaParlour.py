@@ -16,7 +16,7 @@ def welcome_pizza():
 
 
 @app.route('/create', methods=['POST'])
-def create_order() -> bool:
+def create_order() -> str:
     '''
     Uploads the new order into the respective data files. If delivery method is foodora, will upload it to orders.csv,
     if delivery method is ubereats or in-house, uploads the order to orders.csv
@@ -25,13 +25,31 @@ def create_order() -> bool:
                       request.json['_drink'], request.json['_delivery'], request.json['_address'])
 
     if request.json["_delivery"] == "foodora":
-        # serialize order to orders.csv
         write_to_csv(new_order)
-
     else:
         write_to_json(new_order)
 
-    return request.json
+    return "ok"
+
+
+@app.route("/update", methods=['POST'])
+def update_order() -> str:
+    '''
+    Updates a prexisting order in orders.csv or orders.json depending on the delivery type: foodora or, ubereats/in-house respectively.
+
+    Precondition: user inputs their previous order_id, and all other fields that may or may not be changed
+    '''
+    new_order = Order(request.json['_type'], request.json['_size'], request.json['_extra_toppings'],
+                      request.json['_drink'], request.json['_delivery'], request.json['_address'])
+
+    new_order.set_order_id(request.json['_order_id'])
+
+    if request.json["_delivery"] == "foodora":
+        update_order_csv(new_order)
+    else:
+        write_to_json(new_order)
+
+    return "ok"
 
 
 # @app.route('/update')
@@ -44,7 +62,6 @@ def create_order() -> bool:
 #     prices: the list of costs of all items in the user's order
 #     """
 #     return sum(prices)
-
 
 # @app.route('/create')
 # def store_order():
