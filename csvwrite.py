@@ -2,8 +2,10 @@ import csv
 from tempfile import NamedTemporaryFile
 import shutil
 
+CSV = "orders.csv"
 
-def writetofile(new_order):
+
+def write_to_csv(new_order):
     with open('orders.csv', 'w', newline='') as csvfile:
         fieldnames = ['order_id', 'type', 'size', 'extra_toppings',
                       'drink', 'delivery', 'address', 'price']
@@ -17,7 +19,7 @@ def writetofile(new_order):
         csvfile.close()
 
 
-def updateorder(order):
+def update_order_csv(order):
     tempfile = NamedTemporaryFile('w', newline='', delete=False)
 
     fieldnames = ['order_id', 'type', 'size', 'extra_toppings',
