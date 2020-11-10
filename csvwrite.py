@@ -5,10 +5,14 @@ import shutil
 
 # the csv file that orders will be read from and written to
 CSV = "orders.csv"
+# the csv file that holds the menu data
 MENU = "menu.csv"
 
 
 def get_reader() -> List[str]:
+    '''
+    Returns a list of the lines in menu.csv
+    '''
     rows = []
 
     with open(MENU, newline="") as f:
