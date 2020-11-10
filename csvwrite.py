@@ -66,4 +66,22 @@ def update_order_csv(order):
     shutil.move(tempfile.name, 'orders.csv')
 
 
-# def remove_from_csv(order_id: str):
+def remove_from_csv(order_id: str):
+    '''
+    delete from csv
+    '''
+    tempfile = NamedTemporaryFile('w', newline='', delete=False)
+
+    fieldnames = ['order_id', 'type', 'size', 'extra_toppings',
+                  'drink', 'delivery', 'address', 'price']
+
+    with open(CSV, 'r', newline='') as csvfile, tempfile:
+        reader = csv.DictReader(csvfile, delimiter=',', fieldnames=fieldnames)
+        writer = csv.DictWriter(tempfile, delimiter=',', fieldnames=fieldnames)
+
+        for row in reader:
+
+            if row['order_id'] != order_id:
+                writer.writerow(row)
+
+    shutil.move(tempfile.name, 'orders.csv')

@@ -1,7 +1,7 @@
 from flask import Flask, request
 from order import Order
 from jsonwrite import write_to_json, remove_from_json
-from csvwrite import write_to_csv, update_order_csv
+from csvwrite import write_to_csv, update_order_csv, remove_from_csv
 import json
 import csv
 
@@ -60,7 +60,7 @@ def cancel_order() -> str:
     Precondition: order_id is prexisting in the appropriate delivery type
     '''
     if request.json["_delivery"] == "foodora":
-        pass
+        remove_from_csv(request.json["_order_id"])
     elif request.json["_delivery"] == "ubereats" or request.json["_delivery"] == "in-house":
         remove_from_json(request.json["_order_id"])
 
