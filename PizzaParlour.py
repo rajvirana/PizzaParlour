@@ -1,6 +1,6 @@
 from flask import Flask, request
 from order import Order
-from jsonwrite import write_to_json
+from jsonwrite import write_to_json, remove_from_json
 from csvwrite import write_to_csv, update_order_csv
 import json
 import csv
@@ -26,7 +26,7 @@ def create_order() -> str:
 
     if request.json["_delivery"] == "foodora":
         write_to_csv(new_order)
-    else:
+    elif request.json["_delivery"] == "ubereats" or request.json["_delivery"] == "in-house":
         write_to_json(new_order)
 
     return "ok"
@@ -46,8 +46,23 @@ def update_order() -> str:
 
     if request.json["_delivery"] == "foodora":
         update_order_csv(new_order)
-    else:
+    elif request.json["_delivery"] == "ubereats" or request.json["_delivery"] == "in-house":
         write_to_json(new_order)
+
+    return "ok"
+
+
+@app.route("/cancel", methods=['POST'])
+def cancel_order() -> str:
+    '''
+    Cancels a prexisting order in orders.csv or orders.json depending on the delivery type: foodora or, ubereats/in-house respectively.
+
+    Precondition: order_id is prexisting in the appropriate delivery type
+    '''
+    if request.json["_delivery"] == "foodora":
+        pass
+    elif request.json["_delivery"] == "ubereats" or request.json["_delivery"] == "in-house":
+        remove_from_json(request.json["_order_id"])
 
     return "ok"
 

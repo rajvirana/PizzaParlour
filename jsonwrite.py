@@ -1,5 +1,5 @@
 from json import JSONEncoder
-import order
+from order import Order
 import json
 from typing import Dict
 
@@ -7,14 +7,14 @@ from typing import Dict
 JSON = "orders.json"
 
 
-def write_to_json(new_order: order.Order):
+def write_to_json(new_order: Order):
     '''
     Writes the order, new_order, into orders.json
 
     Precondition: new_order.get_delivery() == "ubereats" or new_order.get_delivery() == "in-house"
     '''
 
-    with open('orders.json') as indata:
+    with open(JSON) as indata:
         order_data = json.load(indata)
 
         indata.close()
@@ -23,13 +23,34 @@ def write_to_json(new_order: order.Order):
 
     order_data[new_order.get_order_id()] = order_dict
 
-    with open('orders.json', 'w') as outdata:
+    with open(JSON, 'w') as outdata:
         json.dump(order_data, outdata)
 
         outdata.close()
 
 
+def remove_from_json(order_id: str):
+    '''
+    Removes the order from orders.json given the order_id
+
+    Precondition: order_id already exists in orders.json
+    '''
+    with open(JSON) as indata:
+        order_data = json.load(indata)
+
+        indata.close()
+
+    if order_id in order_data:
+        del order_data[order_id]
+
+        with open(JSON, 'w') as outdata:
+            json.dump(order_data, outdata)
+
+            outdata.close()
+
+
 # if __name__ == "__main__":
+#     remove_from_json("20201109220810220")
 
     # new_order = order.Order('cheese', 'small', ['feta cheese'], 'coke', 'ubereats', '123 depression street' )
 
