@@ -20,6 +20,7 @@ style = style_from_dict({
     Token.Question: '',
 })
 
+# User's initial action choices
 starting_actions = [
     {
         'type': 'list',
@@ -47,6 +48,7 @@ starting_actions = [
     }
 ]
 
+# Asks user if they wish to be redirected to home selection/"start_actions"
 return_action = [
     {
         'type': 'confirm',
@@ -73,6 +75,12 @@ def main():
         pass
     else:
         display_menu()
+
+
+def create_order():
+    '''
+    Places an order specific to user's choices and outputs their order ID.
+    '''
 
 
 def display_menu() -> None:
