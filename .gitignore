@@ -8,6 +8,7 @@ instance/*
 .webassets-cache
 .vscode/
 .vscode/settings.json
+usefulcode.py
 
 ### Flask.Python Stack ###
 # Byte-compiled / optimized / DLL files

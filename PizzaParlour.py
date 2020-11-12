@@ -98,7 +98,7 @@ def request_delivery():
     Precondition: Input should look like:
 
     {
-        "_delivery_method": "foodora",
+        "_delivery": "foodora",
         "_order_id": "34324217871822",
         "_address": "123 depression street",
     } 
@@ -108,19 +108,19 @@ def request_delivery():
     order_id = request.json['_order_id']
 
     if order_id not in keys:
-        order_info["status"] = 404
+        order_info["_status"] = 404
 
         response = app.response_class(response=json.dumps(order_info), status=404, mimetype='application/json')
     else:
-        if request.json["_delivery_method"] == "foodora":
+        if request.json["_delivery"] == "foodora":
             order = convert_to_csv(order_id)    
         else:
             order = get_order(order_id)
         
-        order_info["status"] = 200
-        order_info["order"] = order
-        order_info["address"] = request.json["_address"]
-        order_info["delivery"] = request.json["_delivery_method"]
+        order_info["_status"] = 200
+        order_info["_order"] = order
+        order_info["_address"] = request.json["_address"]
+        order_info["_delivery"] = request.json["_delivery"]
 
         response = app.response_class(response=json.dumps(order_info), status=200, mimetype='application/json')
 
