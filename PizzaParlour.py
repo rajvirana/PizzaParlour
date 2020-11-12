@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
+
 from order import Order
-from jsonwrite import write_to_json, remove_from_json
+from jsonwrite import get_order_ids, write_to_json, remove_from_json
 from csvwrite import get_reader, write_to_csv, update_order_csv, remove_from_csv
+import jsonwrite
 import json
 import csv
 
@@ -12,7 +14,7 @@ app = Flask("Assignment 2")
 def welcome_pizza():
     return "Welcome to Pizza Parlour!"
 
-# s =  {"_order_id": "20201109200700761", "_type": "cheese", "_size": "large", "_extra_toppings": [], "_address": "123 depression street", "_drink": "coke", "_delivery": "ubereats", "_price": 16.55}
+# s =  {"_order_id": "20201109200700761", "_type": "cheese", "_size": "large", "_extra_toppings": ["feta cheese"], "_address": "123 depression street", "_drink": "coke", "_delivery": "ubereats", "_price": 16.55}
 
 
 @app.route('/create', methods=['POST'])
@@ -22,14 +24,15 @@ def create_order() -> str:
     if delivery method is ubereats or in-house, uploads the order to orders.csv
     '''
     new_order = Order(request.json['_type'], request.json['_size'], request.json['_extra_toppings'],
-                      request.json['_drink'], request.json['_delivery'], request.json['_address'])
+                      request.json['_drink'])
 
-    if request.json["_delivery"] == "foodora":
-        write_to_csv(new_order)
-    elif request.json["_delivery"] == "ubereats" or request.json["_delivery"] == "in-house":
-        write_to_json(new_order)
+    write_to_json(new_order)
 
-    return "ok"
+    order_id = {"_order_id": new_order.get_order_id()}
+
+    response = app.response_class(response=json.dumps(order_id), status=201, mimetype='application/json')
+
+    return response
 
 
 @app.route("/update", methods=['POST'])
@@ -39,17 +42,29 @@ def update_order() -> str:
 
     Precondition: user inputs their previous order_id, and all other fields that may or may not be changed
     '''
-    new_order = Order(request.json['_type'], request.json['_size'], request.json['_extra_toppings'],
-                      request.json['_drink'], request.json['_delivery'], request.json['_address'])
 
-    new_order.set_order_id(request.json['_order_id'])
+    keys = get_order_ids()
 
-    if request.json["_delivery"] == "foodora":
-        update_order_csv(new_order)
-    elif request.json["_delivery"] == "ubereats" or request.json["_delivery"] == "in-house":
+    order_id = {"_order_id": request.json["_order_id"]}
+
+    if request.json['_order_id'] not in keys:
+
+        order_id["status"] = 404
+
+        response = app.response_class(response=json.dumps(order_id), status=404, mimetype='application/json')
+    else:
+        new_order = Order(request.json['_type'], request.json['_size'], request.json['_extra_toppings'],
+                        request.json['_drink'])
+
+        new_order.set_order_id(request.json['_order_id'])
+
         write_to_json(new_order)
 
-    return "ok"
+        order_id["status"] = 201
+
+        response = app.response_class(response=json.dumps(order_id), status=201, mimetype='application/json')
+
+    return response
 
 
 @app.route("/cancel", methods=['POST'])
@@ -59,12 +74,21 @@ def cancel_order() -> str:
 
     Precondition: order_id is prexisting in the appropriate delivery type
     '''
-    if request.json["_delivery"] == "foodora":
-        remove_from_csv(request.json["_order_id"])
-    elif request.json["_delivery"] == "ubereats" or request.json["_delivery"] == "in-house":
+    keys = get_order_ids()
+    order_id = {"_order_id": request.json["_order_id"]}
+
+    if request.json['_order_id'] not in keys:
+        order_id["status"] = 404
+        
+        response = app.response_class(response=json.dumps(order_id), status=404, mimetype='application/json')
+    else:
         remove_from_json(request.json["_order_id"])
 
-    return "ok"
+        order_id["status"] = 200
+        
+        response = app.response_class(response=json.dumps(order_id), status=200, mimetype='application/json')
+
+    return response
 
 
 @app.route("/menu", methods=['GET'])
