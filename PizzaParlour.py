@@ -93,6 +93,9 @@ def cancel_order() -> str:
 
 @app.route("/menu", methods=['GET'])
 def get_menu():
+    '''
+    Returns the list of lines from the menu
+    '''
     return jsonify(get_reader())
 
 
