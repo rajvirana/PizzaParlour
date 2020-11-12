@@ -33,10 +33,8 @@ class Order:
     _size: str
     _extra_toppings: List[str]
     _drink: str
-    _delivery: str
-    _addresss: str
 
-    def __init__(self, type, size, extra_toppings, drink, delivery, address):
+    def __init__(self, type, size, extra_toppings, drink):
         '''
         Creates a new order.
         '''
@@ -44,9 +42,7 @@ class Order:
         self._type = type
         self._size = size
         self._extra_toppings = extra_toppings
-        self._address = address
         self._drink = drink
-        self._delivery = delivery
         self._price = self._calculate_price()
 
     def _calculate_price(self) -> float:
@@ -63,7 +59,7 @@ class Order:
 
                     total += float(row[1])
 
-        return total
+        return round(total, 2)
 
     def _timestamp(self) -> int:
         '''
@@ -105,23 +101,11 @@ class Order:
         '''
         return self._extra_toppings
 
-    def get_address(self) -> str:
-        '''
-        Returns the address specified in the order.
-        '''
-        return self._address
-
     def get_drink(self) -> str:
         '''
         Returns the drinks specified in the order.
         '''
         return self._drink
-
-    def get_delivery(self) -> str:
-        '''
-        Returns the delivery specified in the order.
-        '''
-        return self._delivery
 
     def get_price(self) -> int:
         '''
@@ -129,9 +113,8 @@ class Order:
         '''
         return self._price
 
-
 if __name__ == "__main__":
     order = Order('cheese', 'small', [
-                  'feta cheese'], 'coke', 'ubereats', "123 fml street")
+                  'feta cheese'], 'coke')
 
     print(order.get_price())  # 16.55

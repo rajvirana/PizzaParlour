@@ -6,6 +6,16 @@ from typing import Dict
 # the json files orders will be read from and written to
 JSON = "orders.json"
 
+def get_order_ids():
+    with open(JSON) as indata:
+        order_data = json.load(indata)
+
+        indata.close()
+    
+    keys = order_data.keys()
+
+    return keys
+
 
 def write_to_json(new_order: Order):
     '''
@@ -50,6 +60,10 @@ def remove_from_json(order_id: str):
 
 
 # if __name__ == "__main__":
+
+#     a = get_order_ids()
+
+#     print('20201112165232710' in a)
 #     remove_from_json("20201109220810220")
 
     # new_order = order.Order('cheese', 'small', ['feta cheese'], 'coke', 'ubereats', '123 depression street' )
