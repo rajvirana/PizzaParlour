@@ -7,6 +7,10 @@ from typing import Dict
 JSON = "orders.json"
 
 def get_order_ids():
+    '''
+    Returns a list of all the order ids in the order.json file.
+    '''
+
     with open(JSON) as indata:
         order_data = json.load(indata)
 
@@ -15,7 +19,6 @@ def get_order_ids():
     keys = order_data.keys()
 
     return keys
-
 
 def write_to_json(new_order: Order):
     '''
@@ -59,7 +62,52 @@ def remove_from_json(order_id: str):
             outdata.close()
 
 
+def convert_to_csv(order_id: str):
+    '''
+    Converts the order into a csv-formatted string.
+    '''
+    data = get_order(order_id)
+    keys = data.keys()
+
+    output = "_order_id, _type, _extra_toppings, _drink, _price\n"
+
+    for k in keys:
+        if k == "_order_id":
+            output = output + str(data[k])
+        else:
+            output = output + "," + str(data[k])
+
+    return output
+
+def get_order(order_id: str):
+    '''
+    Returns the order information associated with the order id.
+    '''
+    with open(JSON) as indata:
+        order_data = json.load(indata)
+
+        indata.close()
+
+    data = json.loads(order_data[order_id])
+
+    return data
+
 # if __name__ == "__main__":
+#     a = {"_type": "cheese", "_size": "large", "_extra_toppings": ["feta cheese"], "_drink": "coke"}
+
+#     d = convert_to_csv("20201112165232710")
+
+#     print(d)
+
+
+    # if type(a) == list:
+    #     print(True)
+
+        # a=convert_to_csv("20201112165232710")
+
+        # b = json.loads(a)
+        # print(b)
+        # print(b["_type"])
 
 #     a = get_order_ids()
 
