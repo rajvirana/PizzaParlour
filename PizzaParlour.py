@@ -2,13 +2,12 @@ from flask import Flask, request, jsonify
 
 from order import Order
 from jsonwrite import get_order_ids, write_to_json, remove_from_json, convert_to_csv, get_order
-from csvwrite import get_reader, write_to_csv, update_order_csv, remove_from_csv
+from reader import get_reader
 import jsonwrite
 import json
 import csv
 
 app = Flask("Assignment 2")
-
 
 @app.route('/pizza')
 def welcome_pizza():
@@ -28,9 +27,10 @@ def create_order() -> str:
 
     write_to_json(new_order)
 
-    order_id = {"_order_id": new_order.get_order_id()}
+    order_info = {"_order_id": new_order.get_order_id()}
+    order_info["_status"] = 201
 
-    response = app.response_class(response=json.dumps(order_id), status=201, mimetype='application/json')
+    response = app.response_class(response=json.dumps(order_info), status=201, mimetype='application/json')
 
     return response
 
@@ -45,22 +45,22 @@ def update_order() -> str:
 
     keys = get_order_ids()
 
-    order_id = {"_order_id": request.json["_order_id"]}
+    order_id = request.json['_order_id']
+    order_info = {"_order_id": order_id}
 
-    if request.json['_order_id'] not in keys:
 
-        order_id["status"] = 404
+    if order_id not in keys:
+        order_info["_status"] = 404
 
-        response = app.response_class(response=json.dumps(order_id), status=404, mimetype='application/json')
+        response = app.response_class(response=json.dumps(order_info), status=404, mimetype='application/json')
     else:
-        new_order = Order(request.json['_type'], request.json['_size'], request.json['_extra_toppings'],
-                        request.json['_drink'])
+        new_order = Order(request.json['_type'], request.json['_size'], request.json['_extra_toppings'], request.json['_drink'])
 
-        new_order.set_order_id(request.json['_order_id'])
+        new_order.set_order_id(order_id)
 
         write_to_json(new_order)
 
-        order_id["status"] = 201
+        order_info["_status"] = 201
 
         response = app.response_class(response=json.dumps(order_id), status=201, mimetype='application/json')
 
@@ -70,23 +70,25 @@ def update_order() -> str:
 @app.route("/cancel", methods=['POST'])
 def cancel_order() -> str:
     '''
-    Cancels a prexisting order in orders.csv or orders.json depending on the delivery type: foodora or, ubereats/in-house respectively.
+    Cancels a prexisting order in orders.json depending on the delivery type: foodora or, ubereats/in-house respectively.
 
     Precondition: order_id is prexisting in the appropriate delivery type
     '''
     keys = get_order_ids()
-    order_id = {"_order_id": request.json["_order_id"]}
+    order_info = {"_order_id": request.json["_order_id"]}
+    order_id = request.json['_order_id']
 
-    if request.json['_order_id'] not in keys:
-        order_id["status"] = 404
+
+    if order_id not in keys:
+        order_info["_status"] = 404
         
-        response = app.response_class(response=json.dumps(order_id), status=404, mimetype='application/json')
+        response = app.response_class(response=json.dumps(order_info), status=404, mimetype='application/json')
     else:
-        remove_from_json(request.json["_order_id"])
+        remove_from_json(order_id)
 
-        order_id["status"] = 200
+        order_info["_status"] = 200
         
-        response = app.response_class(response=json.dumps(order_id), status=200, mimetype='application/json')
+        response = app.response_class(response=json.dumps(order_info), status=200, mimetype='application/json')
 
     return response
 

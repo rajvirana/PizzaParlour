@@ -14,7 +14,7 @@ CREATE_PIZZA_ACTION = 1
 UPDATE_PIZZA_ACTION = 2
 CANCEL_ORDER_ACTION = 3
 VIEW_MENU_SEL_ACTION = 4
-VIEW_MENU_ACTION = 5
+VIEW_MENU_FULL_ACTION = 5
 REQ_DELIVERY_ACTION = 6
 
 style = style_from_dict({
@@ -76,8 +76,16 @@ def main():
                     'value': CANCEL_ORDER_ACTION
                 },
                 {
-                    'name': '4. View Menu',
-                    'value': VIEW_MENU_ACTION
+                    'name': '4. View price of item',
+                    'value': VIEW_MENU_SEL_ACTION
+                },
+                {
+                    'name': '5. View Menu',
+                    'value': VIEW_MENU_FULL_ACTION
+                },
+                {
+                    'name': '6. Request for Delivery',
+                    'value': REQ_DELIVERY_ACTION
                 }
 
             ]
@@ -98,6 +106,8 @@ def main():
         input_menu()
     elif action['action'] == VIEW_MENU_FULL_ACTION:
         display_menu()
+    else:
+        request_delivery()
 
 
 def create_order():
@@ -246,6 +256,7 @@ def input_menu() -> None:
     '''
     User enters an item name and then obtains the price.
     '''
+    pass
 
 
 def display_menu() -> None:
@@ -268,6 +279,37 @@ def display_menu() -> None:
 
     if (answer['return']):
         main()
+
+
+def request_delivery() -> None:
+    '''
+    Prompts user to select delivery type, enter their Order ID, and Address.
+    '''
+    questions = [
+        {
+            'type': 'list',
+            'name': '_delivery',
+            'message': "Select your delivery preference:",
+            'choices': ['in-house delivery', 'uber eats', 'foodora']
+        },
+        {
+            'type': 'input',
+            'name': '_address',
+            'message': "What is your address? "
+        },
+        {
+            'type': 'input',
+            'name': '_order_id',
+            'message': 'What is your Order ID? '
+        }
+    ]
+
+    answer = prompt(questions, style=style)
+    response = requests.get(url=URL + "/deliver", json=answer)
+    dictFromServer = response.json()
+
+    print("Here is your order!")
+    print(dictFromServer["_order"])
 
 
 if __name__ == "__main__":

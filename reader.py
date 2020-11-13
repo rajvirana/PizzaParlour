@@ -1,13 +1,20 @@
 import csv
+from typing import List
 
-with open('orders.csv', newline="") as f:
-    reader = csv.reader(f)
-    for row in reader:
-        if row[1] == '':
-            print("YEET")
-        else:
-            if row[0] == '19347293874':
-                print("Order found")
-                print(row[2])
-            
-            # print(row)
+MENU = "menu.csv"
+
+def get_reader() -> List[str]:
+    '''
+    Returns a list of the lines in menu.csv
+    '''
+    rows = []
+
+    with open(MENU, newline="") as f:
+        reader = csv.reader(f)
+
+        for line in reader:
+            rows.append(line)
+
+        f.close()
+
+    return rows
