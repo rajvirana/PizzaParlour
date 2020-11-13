@@ -38,7 +38,7 @@ def test_deliver_ubereats():
     assert response.json["_delivery"] == "ubereats"
     assert response.json["_order"]["_type"] == "cheese"
 
-def test_deliver_ubereats_foodora():
+def test_deliver_foodora():
     data = {"_order_id": "20201112165232710", "_delivery":"foodora", "_address": "123 meric st"}
     response = app.test_client().get('/deliver', json=data)
 
@@ -46,6 +46,16 @@ def test_deliver_ubereats_foodora():
     assert type(response.json["_order"]) == str
     assert response.json["_address"] == "123 meric st"
     assert response.json["_delivery"] == "foodora"
+
+def test_deliver_inhouse():
+    data = {"_order_id": "20201112165232710", "_delivery":"in-house", "_address": "123 mertler st"}
+    response = app.test_client().get('/deliver', json=data)
+
+    assert response.status_code == 200
+    assert type(response.json["_order"]) == dict
+    assert response.json["_address"] == "123 mertler st"
+    assert response.json["_delivery"] == "in-house"
+    assert response.json["_order"]["_type"] == "cheese"
 
 def test_cancel_order_fail():
     data = {"_order_id": "11111111111111111"}
