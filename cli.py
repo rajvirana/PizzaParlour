@@ -135,6 +135,7 @@ def create_order():
 
     answer = prompt(order_options)
     response = requests.post(url=URL + "/create", json=answer)
+    # print(resonse._order_id)
 
 
 def display_menu() -> None:
