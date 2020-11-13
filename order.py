@@ -82,39 +82,3 @@ class Order:
         Sets this order's id to id.
         '''
         self._order_id = id
-
-    def get_type(self) -> str:
-        '''
-        Returns the type of the pizza in the order.
-        '''
-        return self._type
-
-    def get_size(self) -> str:
-        '''
-        Returns the size of the pizza in the order.
-        '''
-        return self._size
-
-    def get_toppings(self) -> List[str]:
-        '''
-        Returns the list of toppings in the order.
-        '''
-        return self._extra_toppings
-
-    def get_drink(self) -> str:
-        '''
-        Returns the drinks specified in the order.
-        '''
-        return self._drink
-
-    def get_price(self) -> int:
-        '''
-        Returns the price of the order.
-        '''
-        return self._price
-
-if __name__ == "__main__":
-    order = Order('cheese', 'small', [
-                  'feta cheese'], 'coke')
-
-    print(order.get_price())  # 16.55
