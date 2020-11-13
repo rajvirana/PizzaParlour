@@ -12,8 +12,6 @@ app = Flask("Assignment 2")
 def welcome_pizza():
     return "Welcome to Pizza Parlour!"
 
-# s =  {"_order_id": "20201109200700761", "_type": "cheese", "_size": "large", "_extra_toppings": ["feta cheese"], "_address": "123 depression street", "_drink": "coke", "_delivery": "ubereats", "_price": 16.55}
-
 
 @app.route('/create', methods=['POST'])
 def create_order() -> str:
