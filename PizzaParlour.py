@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify
-
 from order import Order
 from jsonwrite import get_order_ids, write_to_json, remove_from_json, convert_to_csv, get_order
 from reader import get_reader
@@ -62,7 +61,7 @@ def update_order() -> str:
 
         order_info["_status"] = 201
 
-        response = app.response_class(response=json.dumps(order_id), status=201, mimetype='application/json')
+        response = app.response_class(response=json.dumps(order_info), status=201, mimetype='application/json')
 
     return response
 
@@ -134,6 +133,30 @@ def get_menu():
     Returns the list of lines from the menu
     '''
     return jsonify(get_reader())
+
+
+@app.route("/price", methods=['GET'])
+def request_menu_prices():
+    '''
+    Returns a JSON with all the prices in the menu.
+    '''
+    
+    items = get_reader()
+    items_dict = {}
+
+    for i in items:
+        name = i[0].lower()
+        price = i[1]
+
+        if name == "uoftears (extra salty)":
+            name = "uoftears"
+
+        if price != "":
+            items_dict[name] = price
+    
+    response = app.response_class(response=json.dumps(items_dict), status=200, mimetype='application/json')
+
+    return response
 
 
 if __name__ == "__main__":

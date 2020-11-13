@@ -64,3 +64,10 @@ def test_menu():
     response = app.test_client().get('/menu')
 
     assert response.json[0][0] == "Sizes"
+
+def test_prices():
+
+    response = app.test_client().get('/price')
+
+    assert response.json["uoftears"] == "5.81"
+
