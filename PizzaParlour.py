@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 
 from order import Order
-from jsonwrite import get_order_ids, write_to_json, remove_from_json
+from jsonwrite import get_order_ids, write_to_json, remove_from_json, convert_to_csv, get_order
 from csvwrite import get_reader, write_to_csv, update_order_csv, remove_from_csv
 import jsonwrite
 import json
@@ -90,6 +90,41 @@ def cancel_order() -> str:
 
     return response
 
+@app.route("/deliver", methods=['GET'])
+def request_delivery():
+    '''
+    Requests delivery of the pizza.
+
+    Precondition: Input should look like:
+
+    {
+        "_delivery": "foodora",
+        "_order_id": "34324217871822",
+        "_address": "123 depression street",
+    } 
+    '''
+    keys = get_order_ids()
+    order_info = {"_order_id": request.json["_order_id"]}
+    order_id = request.json['_order_id']
+
+    if order_id not in keys:
+        order_info["_status"] = 404
+
+        response = app.response_class(response=json.dumps(order_info), status=404, mimetype='application/json')
+    else:
+        if request.json["_delivery"] == "foodora":
+            order = convert_to_csv(order_id)    
+        else:
+            order = get_order(order_id)
+        
+        order_info["_status"] = 200
+        order_info["_order"] = order
+        order_info["_address"] = request.json["_address"]
+        order_info["_delivery"] = request.json["_delivery"]
+
+        response = app.response_class(response=json.dumps(order_info), status=200, mimetype='application/json')
+
+    return response
 
 @app.route("/menu", methods=['GET'])
 def get_menu():
@@ -99,17 +134,5 @@ def get_menu():
     return jsonify(get_reader())
 
 
-# @app.route('/update')
-# def update_order(new_order: Order) -> None:
-# def calculate_total(prices) -> float:
-#     """
-#     Calculate and returns the user's total cost
-#     prices: the list of costs of all items in the user's order
-#     """
-#     return sum(prices)
-# @app.route('/create')
-# def store_order():
-#     # note: "orders" is an Order type object
-#     return "hello"
 if __name__ == "__main__":
     app.run()
