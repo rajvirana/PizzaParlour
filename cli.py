@@ -38,35 +38,6 @@ def _get_choices(key: str, options: Dict[str, List[str]]) -> List[str]:
         return ["key error"]
 
 
-# User's initial action choices
-starting_actions = [
-    {
-        'type': 'list',
-        'name': 'action',
-        'message': 'What would you like to do?',
-        'choices': [
-            {
-                'name': '1. Order a Pizza',
-                'value': CREATE_PIZZA_ACTION
-            },
-            {
-                'name': '2. Update an Existing Order',
-                'value': UPDATE_PIZZA_ACTION
-            },
-            {
-                'name': '3. Cancel an Order',
-                'value': CANCEL_ORDER_ACTION
-            },
-            {
-                'name': '4. View Menu',
-                'value': VIEW_MENU_ACTION
-            }
-
-        ]
-    }
-]
-
-
 # Asks user if they wish to be redirected to home selection/"start_actions"
 return_action = [
     {
@@ -82,6 +53,35 @@ def main():
     """
     User selects their starting actions: Order a Pizza, Update an Existing Order, Cancel an Order
     """
+
+    # User's initial action choices
+    starting_actions = [
+        {
+            'type': 'list',
+            'name': 'action',
+            'message': 'What would you like to do?',
+            'choices': [
+                {
+                    'name': '1. Order a Pizza',
+                    'value': CREATE_PIZZA_ACTION
+                },
+                {
+                    'name': '2. Update an Existing Order',
+                    'value': UPDATE_PIZZA_ACTION
+                },
+                {
+                    'name': '3. Cancel an Order',
+                    'value': CANCEL_ORDER_ACTION
+                },
+                {
+                    'name': '4. View Menu',
+                    'value': VIEW_MENU_ACTION
+                }
+
+            ]
+        }
+    ]
+
     print("Welcome to Rajvi and Yichen's Pizza Parlour!")
     action = prompt(starting_actions, style=style)
     pprint(action)
@@ -89,7 +89,7 @@ def main():
     if action['action'] == CREATE_PIZZA_ACTION:
         create_order()
     elif action['action'] == UPDATE_PIZZA_ACTION:
-        pass
+        update_order()
     elif action['action'] == CANCEL_ORDER_ACTION:
         pass
     else:
@@ -134,12 +134,80 @@ def create_order():
         }
     ]
 
-    answer = prompt(order_options)
+    answer = prompt(order_options, style=style)
     response = requests.post(url=URL + "/create", json=answer)
     dictFromServer = response.json()
 
     print("Thank you for your order! Your Order ID is " +
           dictFromServer["_order_id"])
+
+    print(response.status_code)
+
+    answer = prompt(return_action, style=style)
+    pprint(answer)
+
+    if (answer['return']):
+        main()
+
+
+def update_order() -> None:
+    '''
+    Prompts the user to enter an order ID, and updates their order options
+    '''
+    response = requests.get(url=URL + "/menu")
+    data = response.json()
+
+    menu_options = list_to_dict(data)
+    toppings_objects = list_to_objects(menu_options["toppings"])
+    menu_options["toppings"] = toppings_objects
+
+    order_options = [
+        {
+            'type': 'input',
+            'name': '_order_id',
+            'message': 'Please enter your Order ID: '
+
+        },
+        {
+            'type': 'list',
+            'name': '_size',
+            'message': 'What size of pizza would you like?',
+            'choices': menu_options['sizes']
+        },
+        {
+            'type': 'list',
+            'name': '_type',
+            'message': "What type of pizza would you like?",
+            'choices': menu_options['pizzas']
+        },
+        {
+            'type': 'checkbox',
+            'name': '_extra_toppings',
+            'message': "Which toppings would you like?",
+            'choices': menu_options['toppings']
+        },
+        {
+            'type': 'list',
+            'name': '_drink',
+            'message': "Choose a Drink",
+            'choices': menu_options['drinks']
+        }
+    ]
+
+    answer = prompt(order_options, style=style)
+    response = requests.post(url=URL + "/update", json=answer)
+    dictFromServer = response.json()
+
+    print("We've recieved your changes. Your Order ID is still " +
+          dictFromServer["_order_id"])
+
+    print(response.status_code)
+
+    answer = prompt(return_action, style=style)
+    pprint(answer)
+
+    if (answer['return']):
+        main()
 
 
 def display_menu() -> None:
