@@ -13,7 +13,9 @@ URL = "http://127.0.0.1:5000"
 CREATE_PIZZA_ACTION = 1
 UPDATE_PIZZA_ACTION = 2
 CANCEL_ORDER_ACTION = 3
-VIEW_MENU_ACTION = 4
+VIEW_MENU_SEL_ACTION = 4
+VIEW_MENU_ACTION = 5
+REQ_DELIVERY_ACTION = 6
 
 style = style_from_dict({
     Token.Separator: '#cc5454',
@@ -91,8 +93,10 @@ def main():
     elif action['action'] == UPDATE_PIZZA_ACTION:
         update_order()
     elif action['action'] == CANCEL_ORDER_ACTION:
-        pass
-    else:
+        cancel_order()
+    elif action['action'] == VIEW_MENU_SEL_ACTION:
+        input_menu()
+    elif action['action'] == VIEW_MENU_FULL_ACTION:
         display_menu()
 
 
@@ -208,6 +212,40 @@ def update_order() -> None:
 
     if (answer['return']):
         main()
+
+
+def cancel_order() -> None:
+    '''
+    Prompts user for their Order ID and cancels the order.
+    '''
+
+    question = [
+        {
+            'type': 'input',
+            'name': '_order_id',
+            'message': 'Please enter your Order ID: '
+        }
+    ]
+
+    answer = prompt(question, style=style)
+    response = requests.post(url=URL + "/cancel", json=answer)
+    dictFromServer = response.json()
+
+    if response.status_code == 200:
+        print("Successfully canceled order {}!".format(
+            dictFromServer["_order_id"]))
+
+    answer = prompt(return_action, style=style)
+    pprint(answer)
+
+    if (answer['return']):
+        main()
+
+
+def input_menu() -> None:
+    '''
+    User enters an item name and then obtains the price.
+    '''
 
 
 def display_menu() -> None:
