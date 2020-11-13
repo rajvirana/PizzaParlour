@@ -18,3 +18,20 @@ def get_reader() -> List[str]:
         f.close()
 
     return rows
+
+def get_prices():
+
+    items = get_reader()
+    items_dict = {}
+
+    for i in items:
+        name = i[0].lower()
+        price = i[1]
+
+        if name == "uoftears (extra salty)":
+            name = "uoftears"
+
+        if price != "":
+            items_dict[name] = price
+    
+    return items_dict

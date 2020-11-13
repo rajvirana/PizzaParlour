@@ -1,9 +1,4 @@
 from typing import List
-import csv
-import time
-
-CSV = "menu.csv"
-
 
 class Order:
     '''
@@ -34,42 +29,16 @@ class Order:
     _extra_toppings: List[str]
     _drink: str
 
-    def __init__(self, type, size, extra_toppings, drink):
+    def __init__(self):
         '''
         Creates a new order.
         '''
-        self._order_id = self._timestamp()
-        self._type = type
-        self._size = size
-        self._extra_toppings = extra_toppings
-        self._drink = drink
-        self._price = self._calculate_price()
-
-    def _calculate_price(self) -> float:
-        '''
-        Calculates the price dynamically based off of menu.csv's prices.
-        '''
-        total = 0.0
-
-        with open(CSV, newline="") as f:
-            reader = csv.reader(f)
-
-            for row in reader:
-                if row[0].lower() == self._size or row[0].lower() == self._type or row[0].lower() == self._drink or row[0].lower() in self._extra_toppings:
-
-                    total += float(row[1])
-
-        return round(total, 2)
-
-    def _timestamp(self) -> int:
-        '''
-        Generates an order id based on the time of the user's order, to the millisecond.
-        '''
-        now = time.time()
-        localtime = time.localtime(now)
-        milliseconds = '%03d' % int((now - int(now)) * 1000)
-
-        return time.strftime('%Y%m%d%H%M%S', localtime) + milliseconds
+        self._order_id = 0
+        self._type = ""
+        self._size = ""
+        self._extra_toppings = []
+        self._drink = ""
+        self._price = 0
 
     def get_order_id(self) -> int:
         '''
@@ -82,3 +51,57 @@ class Order:
         Sets this order's id to id.
         '''
         self._order_id = id
+
+    def set_type(self, type) -> str:
+        '''
+        Sets the type of the pizza in the order.
+        '''
+        self._type = type
+
+    def set_size(self,size) -> str:
+        '''
+        Sets the size of the pizza in the order.
+        '''
+        self._size = size
+
+    def set_toppings(self, toppings) -> List[str]:
+        '''
+        Sets the list of toppings in the order.
+        '''
+        self._extra_toppings = toppings
+
+    def set_drink(self, drink) -> str:
+        '''
+        Sets the drinks specified in the order.
+        '''
+        self._drink = drink
+
+    def set_price(self, price) -> int:
+        '''
+        Sets the price of the order.
+        '''
+        self._price = price
+
+    def get_type(self) -> str:
+        '''
+        Returns the type of the pizza in the order.
+        '''
+        return self._type
+
+    def get_size(self) -> str:
+        '''
+        Returns the size of the pizza in the order.
+        '''
+        return self._size
+
+    def get_toppings(self) -> List[str]:
+        '''
+        Returns the list of toppings in the order.
+        '''
+        return self._extra_toppings
+
+    def get_drink(self) -> str:
+        '''
+        Returns the drinks specified in the order.
+        '''
+        return self._drink

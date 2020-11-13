@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify
 from order import Order
+from order_builder import OrderBuilder
 from jsonwrite import get_order_ids, write_to_json, remove_from_json, convert_to_csv, get_order
-from reader import get_reader
+from reader import get_reader, get_prices
 import jsonwrite
 import json
 import csv
@@ -19,8 +20,16 @@ def create_order() -> str:
     Uploads the new order into the respective data files. If delivery method is foodora, will upload it to orders.csv,
     if delivery method is ubereats or in-house, uploads the order to orders.csv
     '''
-    new_order = Order(request.json['_type'], request.json['_size'], request.json['_extra_toppings'],
-                      request.json['_drink'])
+    builder = OrderBuilder()
+
+    builder.build_orderid()
+    builder.build_drink(request.json['_drink'])
+    builder.build_size(request.json['_size'])
+    builder.build_toppings(request.json['_extra_toppings'])
+    builder.build_type(request.json['_type'])
+    builder.build_price(get_prices())
+
+    new_order = builder.build()
 
     write_to_json(new_order)
 
@@ -51,9 +60,16 @@ def update_order() -> str:
 
         response = app.response_class(response=json.dumps(order_info), status=404, mimetype='application/json')
     else:
-        new_order = Order(request.json['_type'], request.json['_size'], request.json['_extra_toppings'], request.json['_drink'])
+        builder = OrderBuilder()
 
-        new_order.set_order_id(order_id)
+        builder.build_update_orderid(order_id)
+        builder.build_drink(request.json['_drink'])
+        builder.build_size(request.json['_size'])
+        builder.build_toppings(request.json['_extra_toppings'])
+        builder.build_type(request.json['_type'])
+        builder.build_price(get_prices())
+
+        new_order = builder.build()
 
         write_to_json(new_order)
 
@@ -138,20 +154,8 @@ def request_menu_prices():
     '''
     Returns a JSON with all the prices in the menu.
     '''
-    
-    items = get_reader()
-    items_dict = {}
+    items_dict = get_prices()
 
-    for i in items:
-        name = i[0].lower()
-        price = i[1]
-
-        if name == "uoftears (extra salty)":
-            name = "uoftears"
-
-        if price != "":
-            items_dict[name] = price
-    
     response = app.response_class(response=json.dumps(items_dict), status=200, mimetype='application/json')
 
     return response
