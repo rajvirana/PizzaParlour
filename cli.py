@@ -3,6 +3,7 @@ from PyInquirer import Separator, Token, print_json, prompt, style_from_dict
 from pprint import pprint
 from listconvert import list_to_dict, list_to_objects
 from typing import Dict, List
+import json
 import csv
 import requests
 
@@ -135,7 +136,10 @@ def create_order():
 
     answer = prompt(order_options)
     response = requests.post(url=URL + "/create", json=answer)
-    # print(resonse._order_id)
+    dictFromServer = response.json()
+
+    print("Thank you for your order! Your Order ID is " +
+          dictFromServer["_order_id"])
 
 
 def display_menu() -> None:
