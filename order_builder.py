@@ -3,7 +3,14 @@ from order import Order
 import time
 
 class OrderBuilder:
+    '''
+    Builder for an Order object.
 
+    ===Public Attributes===
+    order:
+        The order that the OrderBuilder builds.
+    '''
+    
     def __init__(self) -> None:
         '''
         Creates a new OrderBuilder.
