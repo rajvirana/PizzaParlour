@@ -158,10 +158,11 @@ def create_order():
     print(response.status_code)
 
     answer = prompt(return_action, style=style)
-    pprint(answer)
 
     if (answer['return']):
         main()
+    else:
+        print("Thank you for shopping with us!")
 
 
 def update_order() -> None:
@@ -218,10 +219,11 @@ def update_order() -> None:
     print(response.status_code)
 
     answer = prompt(return_action, style=style)
-    pprint(answer)
 
     if (answer['return']):
         main()
+    else:
+        print("Thank you for shopping with us!")
 
 
 def cancel_order() -> None:
@@ -246,10 +248,11 @@ def cancel_order() -> None:
             dictFromServer["_order_id"]))
 
     answer = prompt(return_action, style=style)
-    pprint(answer)
 
     if (answer['return']):
         main()
+    else:
+        print("Thank you for shopping with us!")
 
 
 def input_menu() -> None:
@@ -275,10 +278,11 @@ def display_menu() -> None:
             print(" ")
 
     answer = prompt(return_action, style=style)
-    pprint(answer)
 
     if (answer['return']):
         main()
+    else:
+        print("Thank you for shopping with us!")
 
 
 def request_delivery() -> None:
@@ -310,6 +314,13 @@ def request_delivery() -> None:
 
     print("Here is your order!")
     print(dictFromServer["_order"])
+
+    answer = prompt(return_action, style=style)
+
+    if (answer['return']):
+        main()
+    else:
+        print("Thank you for shopping with us!")
 
 
 if __name__ == "__main__":
