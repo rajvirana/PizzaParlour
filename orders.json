@@ -1,1 +1,7 @@
-{"20201112165232710": "{\"_order_id\": \"20201112165232710\", \"_type\": \"cheese\", \"_size\": \"small\", \"_extra_toppings\": [\"feta cheese\"], \"_drink\": \"coke\", \"_price\": 16.55}"}
+{
+    "20201112165232710": "{\"_order_id\": \"20201112165232710\", \"_type\": \"cheese\", \"_size\": \"small\", \"_extra_toppings\": [\"feta cheese\"], \"_drink\": \"coke\", \"_price\": 16.55}",
+    "20201112190628904": "{\"_order_id\": \"20201112190628904\", \"_type\": \"cheese\", \"_size\": \"large\", \"_extra_toppings\": [\"feta cheese\"], \"_drink\": \"coke\", \"_price\": 20.55}",
+    "20201112190939380": "{\"_order_id\": \"20201112190939380\", \"_type\": \"uoftears (extra salty)\", \"_size\": \"medium\", \"_extra_toppings\": [\"broccoli\", \"black olives\", \"cheddar cheese\"], \"_drink\": \"coke\", \"_price\": 26.42}",
+    "20201112192402224": "{\"_order_id\": \"20201112192402224\", \"_type\": \"mediterranean\", \"_size\": \"large\", \"_extra_toppings\": [\"salt\", \"broccoli\", \"sundried tomatoes\", \"cheddar cheese\"], \"_drink\": \"coke\", \"_price\": 38.0}",
+    "20201112192706973": "{\"_order_id\": \"20201112192706973\", \"_type\": \"mediterranean\", \"_size\": \"small\", \"_extra_toppings\": [\"sundried tomatoes\", \"cheddar cheese\"], \"_drink\": \"coke\", \"_price\": 19.51}"
+}

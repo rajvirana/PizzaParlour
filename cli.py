@@ -6,6 +6,7 @@ from typing import Dict, List
 import csv
 import requests
 
+
 URL = "http://127.0.0.1:5000"
 
 CREATE_PIZZA_ACTION = 1
@@ -98,14 +99,12 @@ def create_order():
     '''
     Places an order specific to user's choices and outputs their order ID.
     '''
-    r = requests.get(url=URL + "/menu")
-    data = r.json()
+    response = requests.get(url=URL + "/menu")
+    data = response.json()
 
     menu_options = list_to_dict(data)
     toppings_objects = list_to_objects(menu_options["toppings"])
     menu_options["toppings"] = toppings_objects
-
-    # pprint(menu_options)
 
     order_options = [
         {
@@ -122,22 +121,20 @@ def create_order():
         },
         {
             'type': 'checkbox',
-            'name': '_toppings',
+            'name': '_extra_toppings',
             'message': "Which toppings would you like?",
             'choices': menu_options['toppings']
         },
         {
             'type': 'list',
-            'name': '_drinks',
+            'name': '_drink',
             'message': "Choose a Drink",
             'choices': menu_options['drinks']
         }
     ]
 
     answer = prompt(order_options)
-    pprint(answer)
-
-    r = requests.post(url=URL + "/create", data=answer)
+    response = requests.post(url=URL + "/create", json=answer)
 
 
 def display_menu() -> None:

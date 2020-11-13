@@ -19,9 +19,9 @@ def list_to_dict(data: List[List[str]]) -> Dict[str, List[str]]:
             key = row[0].lower()
         elif row[0] != "" and row[1] != "":
             if key not in options:
-                options[key] = [row[0]]
+                options[key] = [row[0].lower()]
             else:
-                options[key].append(row[0])
+                options[key].append(row[0].lower())
 
     return options
 
@@ -29,7 +29,7 @@ def list_to_dict(data: List[List[str]]) -> Dict[str, List[str]]:
 def list_to_objects(items: List[str]) -> List[object]:
     objects = []
     for item in items:
-        objects.append({"name": item})
+        objects.append({"name": item.lower()})
 
     return objects
 
