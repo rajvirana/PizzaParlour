@@ -18,7 +18,7 @@ VIEW_MENU_SEL_ACTION = 4
 VIEW_MENU_FULL_ACTION = 5
 REQ_DELIVERY_ACTION = 6
 
-STATUS_OK = 200
+STATUS_OK = [200, 201]
 
 style = style_from_dict({
     Token.Separator: '#cc5454',
@@ -228,11 +228,12 @@ def update_order() -> None:
     response = requests.post(url=URL + "/update", json=answer)
     dictFromServer = response.json()
 
-    if response.status_code == STATUS_OK:
+    if response.status_code in STATUS_OK:
         print("We've recieved your changes. Your Order ID is still " +
               dictFromServer["_order_id"])
     else:
-        print("Could not update your order. Make sure your Order ID is correct.")
+        print("Could not update your order. Make sure your Order ID is correct. status code: {}".format(
+            response.status_code))
 
     _prompt_return()
 
@@ -254,11 +255,12 @@ def cancel_order() -> None:
     response = requests.post(url=URL + "/cancel", json=answer)
     dictFromServer = response.json()
 
-    if response.status_code == STATUS_OK:
+    if response.status_code in STATUS_OK:
         print("Successfully canceled order {}!".format(
             dictFromServer["_order_id"]))
     else:
-        print("Could not cancel your order. Make sure your Order ID is correct.")
+        print("Could not cancel your order. Make sure your Order ID is correct. status code: {}".format(
+            response.status_code))
 
     _prompt_return()
 
@@ -332,7 +334,7 @@ def request_delivery() -> None:
     response = requests.get(url=URL + "/deliver", json=answer)
     dictFromServer = response.json()
 
-    if response.status_code == STATUS_OK:
+    if response.status_code in STATUS_OK:
         print("Here is your order!")
         print(dictFromServer["_order"])
     else:
