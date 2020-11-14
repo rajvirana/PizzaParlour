@@ -28,6 +28,12 @@ def test_update_order_fail():
 
     assert response.status_code == 404
 
+def test_deliver_fail():
+    data = {"_order_id": "111111", "_delivery":"ubereats", "_address": "123 depresso st"}
+    response = app.test_client().get('/deliver', json=data)
+
+    assert response.status_code == 404
+
 def test_deliver_ubereats():
     data = {"_order_id": "20201112165232710", "_delivery":"ubereats", "_address": "123 depresso st"}
     response = app.test_client().get('/deliver', json=data)
@@ -80,4 +86,3 @@ def test_prices():
     response = app.test_client().get('/price')
 
     assert response.json["uoftears"] == "5.81"
-
