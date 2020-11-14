@@ -2,6 +2,7 @@ from PizzaParlour import app
 import unittest
 from unittest.mock import patch
 from cli import main, create_order, update_order, cancel_order, input_menu, display_menu, response_message, InputValidator
+from prompt_toolkit.document import Document
 from jsonwrite import get_order_ids
 from listconvert import list_to_dict, list_to_objects
 
@@ -175,3 +176,17 @@ def test_response_message_delivery():
 
     assert wrong_value == False
     assert good_value == True
+
+
+def test_input_validator():
+    txt = "cheese"
+    doc = Document(txt, None, None)
+    validator = InputValidator()
+
+    raised = False
+    try:
+        validator.validate(doc)
+    except:
+        raised = True
+
+    assert raised == False
