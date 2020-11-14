@@ -181,4 +181,4 @@ def test_input_validator():
     except:
         raised = True
 
-    assert raised == False
+    assert raised == True
