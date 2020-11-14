@@ -11,6 +11,7 @@ py -m pip install requests
 py -m pip install pytest
 py -m pip install pytest-cov
 py -m pip install pyinquirer
+py -m pip install 'prompt_toolkit==1.0.14'
 ```
 
 ## Usage
