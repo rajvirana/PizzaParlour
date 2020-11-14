@@ -1,9 +1,8 @@
 from PizzaParlour import app
 import unittest
 from unittest.mock import patch
-from cli import main, create_order, update_order, cancel_order, input_menu, display_menu, response_message, InputValidator
+from cli import main, create_order, update_order, cancel_order, input_menu, display_menu, response_message, request_delivery, InputValidator
 from prompt_toolkit.document import Document
-from jsonwrite import get_order_ids
 from listconvert import list_to_dict, list_to_objects
 
 
@@ -182,3 +181,31 @@ def test_input_validator():
         raised = True
 
     assert raised == True
+
+
+def test_cli_cancel_order():
+    data = {"_order_id": "20201112165232710"}
+    response = app.test_client().post('/cancel', json=data)
+    # dictFromServer = response.json()
+
+    assert cancel_order(response.json, response.status_code) == False
+
+
+def test_cli_input_menu():
+    response = app.test_client().get('/price')
+
+    assert input_menu(response.json, "Cheese") == True
+
+
+def test_cli_display_menu():
+    response = app.test_client().get('/menu')
+
+    assert display_menu(response.json) == True
+
+
+def test_cli_request_delivery():
+    data = {"_delivery": "foodora", "_address": "123 Depression Street",
+            "_order_id": "20201112165232710"}
+    response = app.test_client().get('deliver', json=data)
+
+    assert request_delivery(response.json, response.status_code) == False

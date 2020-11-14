@@ -134,13 +134,60 @@ def main():
     elif action['action'] == UPDATE_PIZZA_ACTION:
         update_order()
     elif action['action'] == CANCEL_ORDER_ACTION:
-        cancel_order()
+        question = [
+            {
+                'type': 'input',
+                'name': '_order_id',
+                'message': 'Please enter your Order ID: '
+            }
+        ]
+
+        answer = prompt(question, style=style)
+        response = requests.post(url=URL + "/cancel", json=answer)
+        dictFromServer = response.json()
+        val = cancel_order(dictFromServer, response.status_code)
     elif action['action'] == VIEW_MENU_SEL_ACTION:
-        input_menu()
+        question = [
+            {
+                'type': 'input',
+                'name': '_item',
+                'message': 'What item do you want the price of?',
+                'validate': InputValidator
+            }
+        ]
+
+        answer = prompt(question, style=style)
+        response = requests.get(url=URL + "/price")
+        dictFromServer = response.json()
+        val = input_menu(dictFromServer, answer["_item"])
     elif action['action'] == VIEW_MENU_FULL_ACTION:
-        display_menu()
+        r = requests.get(url=URL + "/menu")
+        menu = r.json()
+        val = display_menu(menu)
     else:
-        request_delivery()
+        questions = [
+            {
+                'type': 'list',
+                'name': '_delivery',
+                'message': "Select your delivery preference:",
+                'choices': ['in-house delivery', 'uber eats', 'foodora']
+            },
+            {
+                'type': 'input',
+                'name': '_address',
+                'message': "What is your address? "
+            },
+            {
+                'type': 'input',
+                'name': '_order_id',
+                'message': 'What is your Order ID? '
+            }
+        ]
+
+        answer = prompt(questions, style=style)
+        response = requests.get(url=URL + "/deliver", json=answer)
+        dictFromServer = response.json()
+        val = request_delivery(dictFromServer, response.status_code)
 
 
 def create_order():
@@ -245,59 +292,57 @@ def update_order() -> None:
     # _prompt_return()
 
 
-def cancel_order():
+def cancel_order(dictFromServer: Dict[str, str], status_code: int) -> bool:
     '''
     Prompts user for their Order ID and cancels the order.
     '''
 
-    question = [
-        {
-            'type': 'input',
-            'name': '_order_id',
-            'message': 'Please enter your Order ID: '
-        }
-    ]
+    # question = [
+    #     {
+    #         'type': 'input',
+    #         'name': '_order_id',
+    #         'message': 'Please enter your Order ID: '
+    #     }
+    # ]
 
-    answer = prompt(question, style=style)
-    response = requests.post(url=URL + "/cancel", json=answer)
-    dictFromServer = response.json()
+    # answer = prompt(question, style=style)
+    # response = requests.post(url=URL + "/cancel", json=answer)
+    # dictFromServer = response.json()
 
-    value = response_message(
-        "cancel", dictFromServer["_order_id"], response.status_code)
+    return response_message(
+        "cancel", dictFromServer["_order_id"], status_code)
 
     # _prompt_return()
 
 
-def input_menu() -> None:
+def input_menu(dictFromServer: [str, str], item: str) -> bool:
     '''
     User enters an item name and then obtains the price.
     '''
 
-    question = [
-        {
-            'type': 'input',
-            'name': '_item',
-            'message': 'What item do you want the price of?',
-            'validate': InputValidator
-        }
-    ]
+    # question = [
+    #     {
+    #         'type': 'input',
+    #         'name': '_item',
+    #         'message': 'What item do you want the price of?',
+    #         'validate': InputValidator
+    #     }
+    # ]
 
-    answer = prompt(question, style=style)
-    response = requests.get(url=URL + "/price")
-    dictFromServer = response.json()
+    # answer = prompt(question, style=style)
+    # response = requests.get(url=URL + "/price")
+    # dictFromServer = response.json()
 
     print("The cost of {} is {}.".format(
-        answer["_item"], dictFromServer[answer["_item"].lower()]))
+        item, dictFromServer[item.lower()]))
 
-    # _prompt_return()
+    return True
 
 
-def display_menu() -> None:
+def display_menu(menu: List[str]) -> bool:
     """
     Diplay the menu from menu.csv
     """
-    r = requests.get(url=URL + "/menu")
-    menu = r.json()
 
     print("="*15 + " MENU " + "="*15)
 
@@ -309,41 +354,45 @@ def display_menu() -> None:
 
     # _prompt_return()
 
+    return True
 
-def request_delivery() -> None:
+
+def request_delivery(dictFromServer: Dict[str, str], status_code: int) -> bool:
     '''
     Prompts user to select delivery type, enter their Order ID, and Address.
     '''
-    questions = [
-        {
-            'type': 'list',
-            'name': '_delivery',
-            'message': "Select your delivery preference:",
-            'choices': ['in-house delivery', 'uber eats', 'foodora']
-        },
-        {
-            'type': 'input',
-            'name': '_address',
-            'message': "What is your address? "
-        },
-        {
-            'type': 'input',
-            'name': '_order_id',
-            'message': 'What is your Order ID? '
-        }
-    ]
+    # questions = [
+    #     {
+    #         'type': 'list',
+    #         'name': '_delivery',
+    #         'message': "Select your delivery preference:",
+    #         'choices': ['in-house delivery', 'uber eats', 'foodora']
+    #     },
+    #     {
+    #         'type': 'input',
+    #         'name': '_address',
+    #         'message': "What is your address? "
+    #     },
+    #     {
+    #         'type': 'input',
+    #         'name': '_order_id',
+    #         'message': 'What is your Order ID? '
+    #     }
+    # ]
 
-    answer = prompt(questions, style=style)
-    response = requests.get(url=URL + "/deliver", json=answer)
-    dictFromServer = response.json()
+    # answer = prompt(questions, style=style)
+    # response = requests.get(url=URL + "/deliver", json=answer)
+    # dictFromServer = response.json()
 
     value = response_message(
-        "deliver", dictFromServer["_order_id"], response.status_code)
+        "deliver", dictFromServer["_order_id"], status_code)
 
     if value:
         print(dictFromServer["_order"])
 
     # _prompt_return()
+
+    return value
 
 
 if __name__ == "__main__":
