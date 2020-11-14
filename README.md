@@ -50,6 +50,10 @@ Furthermore, because we generate order ids based on the **time** that they order
 
 Otherwise, unit tests **will fail**.
 
+There is also a rare issue where after installing all of the dependencies, there will be a ModuleNotFoundError that is caused by an unknown issue in the PYTHON PATH that causes pytest to be unable to find PyInquirer. The only known method is deleting the entire repository and reinstalling dependencies. If it does not run, here is a screenshot of the test coverage:
+
+![image](https://64.media.tumblr.com/fec6ecb7de72ac69e40b1107dd775dfa/2ff54bf954af97cd-4b/s1280x1920/eade76effcb9c4084b542c796b53aa87df927c34.png)
+
 ## Pair Programming
 
 A large portion of our program was done through pair programming.
@@ -122,7 +126,7 @@ We employed the Builder design pattern with our Orders class, because originally
 
 [PyInquirer](https://github.com/CITGuru/PyInquirer)
 
-PyInquirer was chosen for it's interactive command line interface.
+PyInquirer was chosen for it's interactive command line interface. From its docs, PyInquirer is an easily embeddable and beautiful command line interface for Python.
 
 [Pylint](https://pypi.org/project/pylint/)
 
