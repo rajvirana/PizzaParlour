@@ -42,6 +42,25 @@ class InputValidator(Validator):
                 cursor_position=len(document.text))  # Move cursor to end
 
 
+def _prompt_return() -> None:
+    # Asks user if they wish to be redirected to home selection/"start_actions"
+    return_action = [
+        {
+            'type': 'confirm',
+            'message': 'Do you want to return to home selection?',
+            'name': 'return',
+            'default': True,
+        },
+    ]
+
+    answer = prompt(return_action, style=style)
+
+    if (answer['return']):
+        main()
+    else:
+        print("Thank you for shopping with us!")
+
+
 def _get_choices(key: str, options: Dict[str, List[str]]) -> List[str]:
     '''
     Returns the choices in menu options
@@ -50,17 +69,6 @@ def _get_choices(key: str, options: Dict[str, List[str]]) -> List[str]:
         return menu_options[key]
     else:
         return ["key error"]
-
-
-# Asks user if they wish to be redirected to home selection/"start_actions"
-return_action = [
-    {
-        'type': 'confirm',
-        'message': 'Do you want to return to home selection?',
-        'name': 'return',
-        'default': True,
-    },
-]
 
 
 def main():
@@ -167,14 +175,7 @@ def create_order():
     print("Thank you for your order! Your Order ID is " +
           dictFromServer["_order_id"])
 
-    print(response.status_code)
-
-    answer = prompt(return_action, style=style)
-
-    if (answer['return']):
-        main()
-    else:
-        print("Thank you for shopping with us!")
+    _prompt_return()
 
 
 def update_order() -> None:
@@ -228,14 +229,7 @@ def update_order() -> None:
     print("We've recieved your changes. Your Order ID is still " +
           dictFromServer["_order_id"])
 
-    print(response.status_code)
-
-    answer = prompt(return_action, style=style)
-
-    if (answer['return']):
-        main()
-    else:
-        print("Thank you for shopping with us!")
+    _prompt_return()
 
 
 def cancel_order() -> None:
@@ -259,12 +253,7 @@ def cancel_order() -> None:
         print("Successfully canceled order {}!".format(
             dictFromServer["_order_id"]))
 
-    answer = prompt(return_action, style=style)
-
-    if (answer['return']):
-        main()
-    else:
-        print("Thank you for shopping with us!")
+    _prompt_return()
 
 
 def input_menu() -> None:
@@ -288,12 +277,7 @@ def input_menu() -> None:
     print("The cost of {} is {}.".format(
         answer["_item"], dictFromServer[answer["_item"].lower()]))
 
-    answer = prompt(return_action, style=style)
-
-    if (answer['return']):
-        main()
-    else:
-        print("Thank you for shopping with us!")
+    _prompt_return()
 
 
 def display_menu() -> None:
@@ -311,12 +295,7 @@ def display_menu() -> None:
         else:
             print(" ")
 
-    answer = prompt(return_action, style=style)
-
-    if (answer['return']):
-        main()
-    else:
-        print("Thank you for shopping with us!")
+    _prompt_return()
 
 
 def request_delivery() -> None:
@@ -349,12 +328,7 @@ def request_delivery() -> None:
     print("Here is your order!")
     print(dictFromServer["_order"])
 
-    answer = prompt(return_action, style=style)
-
-    if (answer['return']):
-        main()
-    else:
-        print("Thank you for shopping with us!")
+    _prompt_return()
 
 
 if __name__ == "__main__":
