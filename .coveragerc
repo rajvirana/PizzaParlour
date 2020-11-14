@@ -14,6 +14,8 @@ exclude_lines =
     if 0:
     if __name__ == ._main_.:
 
+        # excluding this line because it need not be tested 
         app = Flask("Assignment 2")
 
+        # excluding this line because it need not be tested
         app.run()
