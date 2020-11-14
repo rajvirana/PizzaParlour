@@ -4,6 +4,8 @@ Welcome to Rajvi and Yichen's Pizza Parlour, featuring a fully customized CLI fo
 
 ## Installation
 
+This application was coded in Python 3.9.0.
+
 Please use the package manager [pip](https://pip.pypa.io/en/stable/) to install dependencies:
 
 ```bash
@@ -22,7 +24,7 @@ To run the server:
 py PizzaParlour.py
 ```
 
-To run the CLI:
+To run the CLI (must have server running to create / send orders):
 
 ```bash
 py cli.py
@@ -50,7 +52,7 @@ Furthermore, because we generate order ids based on the **time** that they order
 
 Otherwise, unit tests **will fail**.
 
-There is also a rare issue where after installing all of the dependencies, there will be a ModuleNotFoundError that is caused by an unknown issue in the PYTHON PATH that causes pytest to be unable to find PyInquirer. The only known method is deleting the entire repository and reinstalling dependencies. If it does not run, here is a screenshot of the test coverage:
+There is also a rare issue where after installing all of the dependencies, there will be a ModuleNotFoundError that is caused by an unknown issue in the PYTHON PATH that causes pytest to be unable to find PyInquirer. The only known method is deleting the entire repository and reinstalling dependencies. If it still does not run, here is a screenshot of the test coverage:
 
 ![image](https://64.media.tumblr.com/fec6ecb7de72ac69e40b1107dd775dfa/2ff54bf954af97cd-4b/s1280x1920/eade76effcb9c4084b542c796b53aa87df927c34.png)
 
