@@ -1,4 +1,1 @@
-{
-    "20201112165232710": "{\"_order_id\": \"20201112165232710\", \"_type\": \"uoftears (extra salty)\", \"_size\": \"large\", \"_extra_toppings\": [\"black olives\"], \"_drink\": \"espresso depresso\", \"_price\": 23.08}",
-    "20201113195152685": "{\"_order_id\": \"20201113195152685\", \"_type\": \"cheese\", \"_size\": \"small\", \"_extra_toppings\": [\"salt\", \"broccoli\", \"sundried tomatoes\"], \"_drink\": \"coke\", \"_price\": 29.99}"
-}
+{"20201113223213029": "{\"_order_id\": \"20201113223213029\", \"_type\": \"cheese\", \"_size\": \"small\", \"_extra_toppings\": [\"feta cheese\"], \"_drink\": \"coke\", \"_price\": 16.55}"}

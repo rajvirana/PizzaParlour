@@ -30,8 +30,6 @@ style = style_from_dict({
     Token.Question: '',
 })
 
-menu_options = {}
-
 
 class InputValidator(Validator):
     def validate(self, document):
@@ -61,16 +59,6 @@ def _prompt_return() -> None:
         main()
     else:
         print("Thank you for shopping with us!")
-
-
-def _get_choices(key: str, options: Dict[str, List[str]]) -> List[str]:
-    '''
-    Returns the choices in menu options
-    '''
-    if key in options:
-        return menu_options[key]
-    else:
-        return ["key error"]
 
 
 def main():
@@ -229,8 +217,8 @@ def update_order() -> None:
     dictFromServer = response.json()
 
     if response.status_code in STATUS_OK:
-        print("We've recieved your changes. Your Order ID is still " +
-              dictFromServer["_order_id"])
+        print("We've recieved your changes. Your Order ID is still {}.".format(
+            dictFromServer["_order_id"]))
     else:
         print("Could not update your order. Make sure your Order ID is correct. status code: {}".format(
             response.status_code))
