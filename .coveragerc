@@ -1,6 +1,6 @@
 [run]
 omit = 
-    # omit this single file
+    # omit this single file because it is just a file full of constant variables and do not need to be tested
     questions.py
 
 [report]
