@@ -33,6 +33,12 @@ Run unit tests with coverage:
 pytest --cov-report term --cov=. tests/unit_tests.py
 ```
 
+OR
+
+```bash
+py -m pytest --cov-report term --cov=. tests/unit_tests.py
+```
+
 ### Testing (Please Read)
 
 Due to the fact that we are saving client orders into a database, this means that during **unit testing**, we will be "cancelling" a "premade" order in `orders.json`.
