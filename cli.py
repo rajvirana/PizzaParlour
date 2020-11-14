@@ -3,6 +3,7 @@ from PyInquirer import Separator, Token, print_json, prompt, style_from_dict
 from pprint import pprint
 from listconvert import list_to_dict, list_to_objects
 from typing import Dict, List
+from prompt_toolkit.validation import Validator, ValidationError
 import json
 import csv
 import requests
@@ -28,6 +29,17 @@ style = style_from_dict({
 })
 
 menu_options = {}
+
+
+class InputValidator(Validator):
+    def validate(self, document):
+        response = requests.get(url=URL + "/price")
+        dictFromServer = response.json()
+
+        if document.text.lower() not in dictFromServer:
+            raise ValidationError(
+                message='Please enter a valid item',
+                cursor_position=len(document.text))  # Move cursor to end
 
 
 def _get_choices(key: str, options: Dict[str, List[str]]) -> List[str]:
@@ -259,7 +271,29 @@ def input_menu() -> None:
     '''
     User enters an item name and then obtains the price.
     '''
-    pass
+
+    question = [
+        {
+            'type': 'input',
+            'name': '_item',
+            'message': 'What item do you want the price of?',
+            'validate': InputValidator
+        }
+    ]
+
+    answer = prompt(question, style=style)
+    response = requests.get(url=URL + "/price")
+    dictFromServer = response.json()
+
+    print("The cost of {} is {}.".format(
+        answer["_item"], dictFromServer[answer["_item"].lower()]))
+
+    answer = prompt(return_action, style=style)
+
+    if (answer['return']):
+        main()
+    else:
+        print("Thank you for shopping with us!")
 
 
 def display_menu() -> None:
