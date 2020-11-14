@@ -1,9 +1,13 @@
 from typing import List, Dict
 
-data = [["Sizes", ""], ["Small", "6.99"], ["Medium", "8.99"], ["Large", "10.99"], ["", ""], ["Pizzas", ""], ["Cheese", "1.01"], ["Mediterranean", "2.00"], ["UofTears (extra Salty)", "5.81"], ["Custom", " 10.99"], ["", ""], ["Toppings", ""], [
-    "Salt", "9.99"], ["Broccoli", "4.50"], ["Sundried Tomatoes", "4.50"], ["Black Olives", "1.10"], ["Tears", "0.01"], ["Cheddar Cheese", "3.02"], ["Pepperoni", "2.89"], ["Feta Cheese", "5.55"], ["", ""], ["Drinks", ""], ["Coke", " 3.00"]]
+# data = [["Sizes", ""], ["Small", "6.99"], ["Medium", "8.99"], ["Large", "10.99"], ["", ""], ["Pizzas", ""], ["Cheese", "1.01"], ["Mediterranean", "2.00"], ["UofTears (extra Salty)", "5.81"], ["Custom", " 10.99"], ["", ""], ["Toppings", ""], [
+#     "Salt", "9.99"], ["Broccoli", "4.50"], ["Sundried Tomatoes", "4.50"], ["Black Olives", "1.10"], ["Tears", "0.01"], ["Cheddar Cheese", "3.02"], ["Pepperoni", "2.89"], ["Feta Cheese", "5.55"], ["", ""], ["Drinks", ""], ["Coke", " 3.00"]]
 
-menu_options = {}
+# output = {'sizes': ['small', 'medium', 'large'], 'pizzas': ['cheese', 'mediterranean', 'uoftears (extra salty)', 'custom'], 'toppings': [{'name': 'salt'}, {'name': 'broccoli'}, {
+#     'name': 'sundried tomatoes'}, {'name': 'black olives'}, {'name': 'tears'}, {'name': 'cheddar cheese'}, {'name': 'pepperoni'}, {'name': 'feta cheese'}], 'drinks': ['coke']}
+
+# items = [{'name': 'salt'}, {'name': 'broccoli'}, {'name': 'sundried tomatoes'}, {'name': 'black olives'}, {
+#     'name': 'tears'}, {'name': 'cheddar cheese'}, {'name': 'pepperoni'}, {'name': 'feta cheese'}]
 
 
 def list_to_dict(data: List[List[str]]) -> Dict[str, List[str]]:
@@ -34,9 +38,10 @@ def list_to_objects(items: List[str]) -> List[object]:
     return objects
 
 
-if __name__ == "__main__":
-    options = list_to_dict(data)
-    items = list_to_objects(options["toppings"])
-    options["toppings"] = items
+# if __name__ == "__main__":
+#     options = list_to_dict(data)
+#     items_result = list_to_objects(options["toppings"])
+#     options["toppings"] = items
 
-    print(options)
+#     print(items)
+#     print(items_result == items)

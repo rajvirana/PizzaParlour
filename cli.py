@@ -1,5 +1,5 @@
 from __future__ import print_function, unicode_literals
-from PyInquirer import Separator, Token, print_json, prompt, style_from_dict
+from PyInquirer import Separator, print_json, prompt, Token, style_from_dict
 from pprint import pprint
 from listconvert import list_to_dict, list_to_objects
 from typing import Dict, List
@@ -42,30 +42,53 @@ class InputValidator(Validator):
                 cursor_position=len(document.text))  # Move cursor to end
 
 
-def _prompt_return() -> None:
-    # Asks user if they wish to be redirected to home selection/"start_actions"
-    return_action = [
-        {
-            'type': 'confirm',
-            'message': 'Do you want to return to home selection?',
-            'name': 'return',
-            'default': True,
-        },
-    ]
+def response_message(method_type: str, order_id: str, status_code: int) -> bool:
+    if method_type == "update":
+        if status_code in STATUS_OK:
+            print(
+                "Order updated successfully. Your Order ID is still {}.".format(order_id))
+            return True
+        else:
+            print("Could not update order. Please enter a valid Order ID.")
+            return False
+    elif method_type == "cancel":
+        if status_code in STATUS_OK:
+            print("Order cancelled successfully.")
+            return True
+        else:
+            print("Could not cancel order. Please enter a valid Order ID.")
+            return False
+    elif method_type == "deliver":
+        if status_code in STATUS_OK:
+            print("Order has been delivered successfully!")
+            return True
+        else:
+            print("Could not deliver your order. Please enter a valid Order ID.")
+            return False
 
-    answer = prompt(return_action, style=style)
+# def _prompt_return() -> None:
+#     # Asks user if they wish to be redirected to home selection/"start_actions"
+#     return_action = [
+#         {
+#             'type': 'confirm',
+#             'message': 'Do you want to return to home selection?',
+#             'name': 'return',
+#             'default': True,
+#         },
+#     ]
 
-    if (answer['return']):
-        main()
-    else:
-        print("Thank you for shopping with us!")
+#     answer = prompt(return_action)
+
+#     if (answer['return']):
+#         main()
+#     else:
+#         print("Thank you for shopping with us!")
 
 
 def main():
     """
     User selects their starting actions: Order a Pizza, Update an Existing Order, Cancel an Order
     """
-
     # User's initial action choices
     starting_actions = [
         {
@@ -165,7 +188,7 @@ def create_order():
     print("Thank you for your order! Your Order ID is " +
           dictFromServer["_order_id"])
 
-    _prompt_return()
+    # _prompt_return()
 
 
 def update_order() -> None:
@@ -216,17 +239,13 @@ def update_order() -> None:
     response = requests.post(url=URL + "/update", json=answer)
     dictFromServer = response.json()
 
-    if response.status_code in STATUS_OK:
-        print("We've recieved your changes. Your Order ID is still {}.".format(
-            dictFromServer["_order_id"]))
-    else:
-        print("Could not update your order. Make sure your Order ID is correct. status code: {}".format(
-            response.status_code))
+    value = response_message(
+        "update", dictFromServer["_order_id"], response.status_code)
 
-    _prompt_return()
+    # _prompt_return()
 
 
-def cancel_order() -> None:
+def cancel_order():
     '''
     Prompts user for their Order ID and cancels the order.
     '''
@@ -243,14 +262,10 @@ def cancel_order() -> None:
     response = requests.post(url=URL + "/cancel", json=answer)
     dictFromServer = response.json()
 
-    if response.status_code in STATUS_OK:
-        print("Successfully canceled order {}!".format(
-            dictFromServer["_order_id"]))
-    else:
-        print("Could not cancel your order. Make sure your Order ID is correct. status code: {}".format(
-            response.status_code))
+    value = response_message(
+        "cancel", dictFromServer["_order_id"], response.status_code)
 
-    _prompt_return()
+    # _prompt_return()
 
 
 def input_menu() -> None:
@@ -274,7 +289,7 @@ def input_menu() -> None:
     print("The cost of {} is {}.".format(
         answer["_item"], dictFromServer[answer["_item"].lower()]))
 
-    _prompt_return()
+    # _prompt_return()
 
 
 def display_menu() -> None:
@@ -292,7 +307,7 @@ def display_menu() -> None:
         else:
             print(" ")
 
-    _prompt_return()
+    # _prompt_return()
 
 
 def request_delivery() -> None:
@@ -322,13 +337,13 @@ def request_delivery() -> None:
     response = requests.get(url=URL + "/deliver", json=answer)
     dictFromServer = response.json()
 
-    if response.status_code in STATUS_OK:
-        print("Here is your order!")
-        print(dictFromServer["_order"])
-    else:
-        print("Could not deliver your order. Make sure your Order ID is correct.")
+    value = response_message(
+        "deliver", dictFromServer["_order_id"], response.status_code)
 
-    _prompt_return()
+    if value:
+        print(dictFromServer["_order"])
+
+    # _prompt_return()
 
 
 if __name__ == "__main__":
