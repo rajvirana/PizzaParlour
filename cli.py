@@ -1,22 +1,23 @@
 from __future__ import print_function, unicode_literals
-from PyInquirer import Separator, print_json, prompt, Token, style_from_dict
+import requests
+import csv
+import json
+from typing import Dict, List
+from PyInquirer import prompt, Token, style_from_dict
 from pprint import pprint
 from listconvert import list_to_dict, list_to_objects
-from typing import Dict, List
-from prompt_toolkit.validation import Validator, ValidationError
-import json
-import csv
-import requests
+from questions import InputValidator, starting_actions, cancel_questions, select_questions, deliver_questions, CREATE_PIZZA_ACTION, UPDATE_PIZZA_ACTION, CANCEL_ORDER_ACTION, VIEW_MENU_FULL_ACTION, VIEW_MENU_SEL_ACTION, REQ_DELIVERY_ACTION, URL
+# from prompt_toolkit.validation import Validator, ValidationError
 
 
-URL = "http://127.0.0.1:5000"
+# URL = "http://127.0.0.1:5000"
 
-CREATE_PIZZA_ACTION = 1
-UPDATE_PIZZA_ACTION = 2
-CANCEL_ORDER_ACTION = 3
-VIEW_MENU_SEL_ACTION = 4
-VIEW_MENU_FULL_ACTION = 5
-REQ_DELIVERY_ACTION = 6
+# CREATE_PIZZA_ACTION = 1
+# UPDATE_PIZZA_ACTION = 2
+# CANCEL_ORDER_ACTION = 3
+# VIEW_MENU_SEL_ACTION = 4
+# VIEW_MENU_FULL_ACTION = 5
+# REQ_DELIVERY_ACTION = 6
 
 STATUS_OK = [200, 201]
 
@@ -31,15 +32,15 @@ style = style_from_dict({
 })
 
 
-class InputValidator(Validator):
-    def validate(self, document):
-        response = requests.get(url=URL + "/price")
-        dictFromServer = response.json()
+# class InputValidator(Validator):
+#     def validate(self, document):
+#         response = requests.get(url=URL + "/price")
+#         dictFromServer = response.json()
 
-        if document.text.lower() not in dictFromServer:
-            raise ValidationError(
-                message='Please enter a valid item',
-                cursor_position=len(document.text))  # Move cursor to end
+#         if document.text.lower() not in dictFromServer:
+#             raise ValidationError(
+#                 message='Please enter a valid item',
+#                 cursor_position=len(document.text))  # Move cursor to end
 
 
 def response_message(method_type: str, order_id: str, status_code: int) -> bool:
@@ -90,40 +91,40 @@ def main():
     User selects their starting actions: Order a Pizza, Update an Existing Order, Cancel an Order
     """
     # User's initial action choices
-    starting_actions = [
-        {
-            'type': 'list',
-            'name': 'action',
-            'message': 'What would you like to do?',
-            'choices': [
-                {
-                    'name': '1. Order a Pizza',
-                    'value': CREATE_PIZZA_ACTION
-                },
-                {
-                    'name': '2. Update an Existing Order',
-                    'value': UPDATE_PIZZA_ACTION
-                },
-                {
-                    'name': '3. Cancel an Order',
-                    'value': CANCEL_ORDER_ACTION
-                },
-                {
-                    'name': '4. View price of item',
-                    'value': VIEW_MENU_SEL_ACTION
-                },
-                {
-                    'name': '5. View Menu',
-                    'value': VIEW_MENU_FULL_ACTION
-                },
-                {
-                    'name': '6. Request for Delivery',
-                    'value': REQ_DELIVERY_ACTION
-                }
+    # starting_actions = [
+    #     {
+    #         'type': 'list',
+    #         'name': 'action',
+    #         'message': 'What would you like to do?',
+    #         'choices': [
+    #             {
+    #                 'name': '1. Order a Pizza',
+    #                 'value': CREATE_PIZZA_ACTION
+    #             },
+    #             {
+    #                 'name': '2. Update an Existing Order',
+    #                 'value': UPDATE_PIZZA_ACTION
+    #             },
+    #             {
+    #                 'name': '3. Cancel an Order',
+    #                 'value': CANCEL_ORDER_ACTION
+    #             },
+    #             {
+    #                 'name': '4. View price of item',
+    #                 'value': VIEW_MENU_SEL_ACTION
+    #             },
+    #             {
+    #                 'name': '5. View Menu',
+    #                 'value': VIEW_MENU_FULL_ACTION
+    #             },
+    #             {
+    #                 'name': '6. Request for Delivery',
+    #                 'value': REQ_DELIVERY_ACTION
+    #             }
 
-            ]
-        }
-    ]
+    #         ]
+    #     }
+    # ]
 
     print("Welcome to Rajvi and Yichen's Pizza Parlour!")
     action = prompt(starting_actions, style=style)
@@ -134,29 +135,29 @@ def main():
     elif action['action'] == UPDATE_PIZZA_ACTION:
         update_order()
     elif action['action'] == CANCEL_ORDER_ACTION:
-        question = [
-            {
-                'type': 'input',
-                'name': '_order_id',
-                'message': 'Please enter your Order ID: '
-            }
-        ]
+        # cancel_questions = [
+        #     {
+        #         'type': 'input',
+        #         'name': '_order_id',
+        #         'message': 'Please enter your Order ID: '
+        #     }
+        # ]
 
-        answer = prompt(question, style=style)
+        answer = prompt(cancel_questions, style=style)
         response = requests.post(url=URL + "/cancel", json=answer)
         dictFromServer = response.json()
         val = cancel_order(dictFromServer, response.status_code)
     elif action['action'] == VIEW_MENU_SEL_ACTION:
-        question = [
-            {
-                'type': 'input',
-                'name': '_item',
-                'message': 'What item do you want the price of?',
-                'validate': InputValidator
-            }
-        ]
+        # select_questions = [
+        #     {
+        #         'type': 'input',
+        #         'name': '_item',
+        #         'message': 'What item do you want the price of?',
+        #         'validate': InputValidator
+        #     }
+        # ]
 
-        answer = prompt(question, style=style)
+        answer = prompt(select_questions, style=style)
         response = requests.get(url=URL + "/price")
         dictFromServer = response.json()
         val = input_menu(dictFromServer, answer["_item"])
@@ -165,26 +166,26 @@ def main():
         menu = r.json()
         val = display_menu(menu)
     else:
-        questions = [
-            {
-                'type': 'list',
-                'name': '_delivery',
-                'message': "Select your delivery preference:",
-                'choices': ['in-house delivery', 'uber eats', 'foodora']
-            },
-            {
-                'type': 'input',
-                'name': '_address',
-                'message': "What is your address? "
-            },
-            {
-                'type': 'input',
-                'name': '_order_id',
-                'message': 'What is your Order ID? '
-            }
-        ]
+        # deliver_questions = [
+        #     {
+        #         'type': 'list',
+        #         'name': '_delivery',
+        #         'message': "Select your delivery preference:",
+        #         'choices': ['in-house delivery', 'uber eats', 'foodora']
+        #     },
+        #     {
+        #         'type': 'input',
+        #         'name': '_address',
+        #         'message': "What is your address? "
+        #     },
+        #     {
+        #         'type': 'input',
+        #         'name': '_order_id',
+        #         'message': 'What is your Order ID? '
+        #     }
+        # ]
 
-        answer = prompt(questions, style=style)
+        answer = prompt(deliver_questions, style=style)
         response = requests.get(url=URL + "/deliver", json=answer)
         dictFromServer = response.json()
         val = request_delivery(dictFromServer, response.status_code)

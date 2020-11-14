@@ -1,0 +1,19 @@
+[run]
+omit = 
+    # omit this single file
+    questions.py
+
+[report]
+exclude_lines = 
+    pragma: no cover
+    def __repr__
+    if self.debug:
+    if settings.DEBUG
+    raise AssertionError
+    raise NotImplementedError
+    if 0:
+    if __name__ == ._main_.:
+
+        app = Flask("Assignment 2")
+
+        app.run()
