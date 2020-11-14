@@ -1,0 +1,21 @@
+[run]
+omit = 
+    # omit this single file because it is just a file full of constant variables and do not need to be tested
+    questions.py
+
+[report]
+exclude_lines = 
+    pragma: no cover
+    def __repr__
+    if self.debug:
+    if settings.DEBUG
+    raise AssertionError
+    raise NotImplementedError
+    if 0:
+    if __name__ == ._main_.:
+
+        # excluding this line because it need not be tested 
+        app = Flask("Assignment 2")
+
+        # excluding this line because it need not be tested
+        app.run()
