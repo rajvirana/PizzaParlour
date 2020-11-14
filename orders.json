@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 {
     "20201112165232710": "{\"_order_id\": \"20201112165232710\", \"_type\": \"cheese\", \"_size\": \"small\", \"_extra_toppings\": [], \"_drink\": \"coke\", \"_price\": 11.0}"
 }
+=======
+{"20201114015941638": "{\"_order_id\": \"20201114015941638\", \"_type\": \"cheese\", \"_size\": \"small\", \"_extra_toppings\": [\"feta cheese\"], \"_drink\": \"coke\", \"_price\": 16.55}"}
+>>>>>>> d8e95cd0f0714966052a2ddceeaff73199a5eafd
