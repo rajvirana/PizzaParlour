@@ -186,7 +186,6 @@ def test_input_validator():
 def test_cli_cancel_order():
     data = {"_order_id": "20201112165232710"}
     response = app.test_client().post('/cancel', json=data)
-    # dictFromServer = response.json()
 
     assert cancel_order(response.json, response.status_code) == False
 
