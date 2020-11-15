@@ -22,7 +22,7 @@ py -m pip install ptyprocess
 py -m pip install regex
 ```
 
-If the code does not run, there is potentially an issue with PyInquirer not installing its dependencies properly. The above listed are all the dependencies, but refer to the [PyInquirer](https://github.com/CITGuru/PyInquirer) readme, requirements.txt, requirements-dev.txt to check what is missing.
+If the code does not run, there is potentially an issue with PyInquirer not installing its dependencies properly. The above listed are all the dependencies, but refer to the [PyInquirer](https://github.com/CITGuru/PyInquirer) readme, requirements.txt, requirements_dev.txt to check what is missing.
 
 ## Usage
 
