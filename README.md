@@ -108,6 +108,8 @@ One thing that was slightly frustrating was the lack of access to the other's co
 
 ## Code Design
 
+Our CLI requests to the server the items in menu.csv and renders it dynamically, meaning that **if new items are added to the menu.csv list, the CLI will display it.** Thus, we opted to have a few select options within our menu so that it would display well on the CLI. Feel free to add or remove any element in the menu.csv file and see its changes in the CLI.
+
 We wanted our API to be able to interact with both the CLI and a database, so we decided to implement an extra step of writing order information to a JSON file. 
 
 We employed the Builder design pattern with our Orders class, because originally, it required several different input values to its init method, which was a less-than-ideal way to go about creating an Order object. Thus, we decided to switch over to OrderBuilder class, which calls methods that will set the required instance variables in the Order class. 
