@@ -14,6 +14,12 @@ py -m pip install pytest
 py -m pip install pytest-cov
 py -m pip install pyinquirer
 py -m pip install 'prompt_toolkit==1.0.14'
+py -m pip install Pygments
+py -m pip install pytest-html
+py -m pip install pytest-xdist
+py -m pip install pylint
+py -m pip install ptyprocess
+py -m pip install regex
 ```
 
 ## Usage
